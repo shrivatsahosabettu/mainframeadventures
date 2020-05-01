@@ -1,0 +1,91 @@
+ IDENTIFICATION DIVISION.
+ PROGRAM-ID. REWRTSEQ.
+******************************************************************
+ ENVIRONMENT DIVISION.
+******************************************************************
+ INPUT-OUTPUT SECTION.
+ FILE-CONTROL.
+     SELECT IN-FILE ASSIGN TO SEQ.
+******************************************************************
+ DATA DIVISION.
+******************************************************************
+ FILE SECTION.
+ FD IN-FILE
+     RECORD CONTAINS 80 CHARACTERS
+     RECORDING MODE IS F.
+ 01 IN-RECORD.
+     05 PERSON-DOB.
+        10 PERSON-YEAR    PIC 9999.
+        10 PERSON-MONTH   PIC 99.
+        10 PERSON-DAY     PIC 99.
+     05 PERSON-NAME       PIC A(15).
+     05 PERSON-COUNTRY    PIC A(10).
+**********************************
+ WORKING-STORAGE SECTION.
+**********************************
+ 01 SWITCHES.
+     05 EOF-SWITCH        PIC X VALUE "N".
+ 01 COUNTERS.
+     05 REC-COUNTER       PIC 9(3) VALUE 0.
+ 77 WS-DOB                PIC X(10).
+ 77 WS-POS                PIC S9(3) VALUE 1.
+******************************************************************
+ PROCEDURE DIVISION.
+******************************************************************
+ 000-MAIN.
+     PERFORM 100-OPEN-FILE.
+     PERFORM 200-READ-RECORDS
+         UNTIL EOF-SWITCH = "Y".
+     PERFORM 600-CLOSE-FILE.
+     DISPLAY 'TOTAL RECORDS: ' REC-COUNTER.
+     STOP RUN.
+**********************************
+ 100-OPEN-FILE.
+**********************************
+     OPEN I-O IN-FILE.
+**********************************
+ 200-READ-RECORDS.
+**********************************
+     READ IN-FILE
+         AT END MOVE "Y" TO EOF-SWITCH
+         NOT AT END PERFORM 300-PROCESS-RECORD
+     END-READ.
+**********************************
+ 300-PROCESS-RECORD.
+**********************************
+     COMPUTE REC-COUNTER = REC-COUNTER + 1.
+     PERFORM 400-DISPLAY-RECORD.
+     IF PERSON-NAME = "MARIO ROSSI"
+       PERFORM 500-CHANGE-RECORD
+     END-IF.
+**********************************
+ 400-DISPLAY-RECORD.
+**********************************
+     MOVE 1 TO WS-POS.
+     STRING
+            PERSON-DAY   DELIMITED BY SIZE
+            '/'          DELIMITED BY SIZE
+            PERSON-MONTH DELIMITED BY SIZE
+            '/'          DELIMITED BY SIZE
+            PERSON-YEAR  DELIMITED BY SIZE
+     INTO WS-DOB
+     WITH POINTER WS-POS.
+     DISPLAY 'NAME   : ' PERSON-NAME.
+     DISPLAY 'COUNTRY: ' PERSON-COUNTRY.
+     DISPLAY 'DOB    : ' WS-DOB.
+**********************************
+ 500-CHANGE-RECORD.
+**********************************
+     MOVE 1969        TO PERSON-YEAR.
+     MOVE 3           TO PERSON-MONTH.
+     MOVE 27          TO PERSON-DAY.                              
+     MOVE 'JANE DOE'  TO PERSON-NAME.
+     MOVE 'UK'        TO PERSON-COUNTRY.
+     DISPLAY '**** RECORD CHANGED ***'
+     PERFORM 400-DISPLAY-RECORD.
+     DISPLAY '***********************'
+     REWRITE IN-RECORD.
+**********************************
+ 600-CLOSE-FILE.
+**********************************
+     CLOSE IN-FILE.

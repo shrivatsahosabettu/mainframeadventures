@@ -1,0 +1,14 @@
+ IDENTIFICATION DIVISION.
+ PROGRAM-ID. CALLSUB3.
+******************************************************************
+ DATA DIVISION.
+******************************************************************
+ LINKAGE SECTION.
+ 01 LS-ID       PIC 9(5).
+ 01 LS-NAME     PIC A(15).
+******************************************************************
+ PROCEDURE DIVISION USING LS-ID, LS-NAME.
+******************************************************************
+     DISPLAY 'RECEIVED LS-ID: ' LS-ID.
+     MOVE 12345 TO LS-ID.
+     EXIT PROGRAM.

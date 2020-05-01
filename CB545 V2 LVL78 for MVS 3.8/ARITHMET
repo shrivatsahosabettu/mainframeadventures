@@ -1,0 +1,95 @@
+//ARITHMET JOB (COBOL),
+//             'COBOL DATATYPES',
+//             CLASS=A,
+//             MSGCLASS=H,
+//             REGION=8M,TIME=1440,
+//             MSGLEVEL=(1,1)
+//ARITHM   EXEC COBUCG,
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'
+//COB.SYSPUNCH DD DUMMY
+//COB.SYSIN    DD *
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DATATYPS.
+      ******************************************************************
+       ENVIRONMENT DIVISION.
+      ******************************************************************
+       DATA DIVISION.
+      ******************************************************************
+       WORKING-STORAGE SECTION.
+           01 WS-ACCEPT   PIC A(16).
+           01 WS-NAME     PIC A(16).
+           01 WS-NUM1     PIC 9(5) VALUE 10.
+           01 WS-NUM2     PIC 9(5) VALUE 20.
+           01 WS-NUM3     PIC 9(5) VALUE 30.
+           01 WS-NUM4     PIC 9(5) VALUE 40.
+           01 WS-NUM5     PIC 9(5) VALUE 50.
+           01 WS-NUM6     PIC 9(5) VALUE 60.
+           01 WS-NUM7     PIC 9(5) VALUE 70.
+           01 WS-NUM8     PIC 9(5) VALUE 80.
+           01 WS-ADD      PIC 9(5).
+           01 WS-MUL      PIC 9(5).
+           01 WS-SUB      PIC 9(5).
+           01 WS-DIV      PIC 9(5).
+           01 WS-REM      PIC 9(5).
+           01 WS-COM      PIC 9(5).
+      ******************************************************************
+       PROCEDURE DIVISION.
+      ******************************************************************
+           ACCEPT WS-ACCEPT.
+           MOVE WS-ACCEPT TO WS-NAME.
+           ACCEPT WS-ACCEPT.
+           MOVE WS-ACCEPT TO WS-NAME.
+           DISPLAY 'SPEAK, FRIEND, AND ENTER'.
+           DISPLAY 'WS-ACCEPT: ' WS-ACCEPT.
+           DISPLAY 'WS-NAME  : ' WS-NAME.
+           DISPLAY 'WS-NUM1: ' WS-NUM1.
+           DISPLAY 'WS-NUM2: ' WS-NUM2.
+           DISPLAY 'WS-NUM3: ' WS-NUM3.
+           DISPLAY 'WS-NUM4: ' WS-NUM4.
+           DISPLAY 'WS-NUM5: ' WS-NUM5.
+           DISPLAY 'WS-NUM6: ' WS-NUM6.
+           DISPLAY 'WS-NUM7: ' WS-NUM7.
+           DISPLAY 'WS-NUM8: ' WS-NUM8.
+      **********************************
+           DISPLAY 'ADD OPERATION'.
+           ADD WS-NUM1 TO WS-NUM2.
+           DISPLAY 'WS-NUM1: ' WS-NUM1.
+           DISPLAY 'WS-NUM2: ' WS-NUM2.
+           ADD WS-NUM1 WS-NUM2 GIVING WS-ADD.
+           DISPLAY 'WS-NUM1: ' WS-NUM1.
+           DISPLAY 'WS-NUM2: ' WS-NUM2.
+           DISPLAY 'WS-ADD : ' WS-ADD.
+      **********************************
+           DISPLAY 'SUBTRACT OPERATION'
+           SUBTRACT WS-NUM3 FROM WS-NUM4 GIVING WS-SUB.
+           DISPLAY 'WS-NUM3: ' WS-NUM3.
+           DISPLAY 'WS-NUM4: ' WS-NUM4.
+           DISPLAY 'WS-SUB : ' WS-SUB.
+      **********************************
+           DISPLAY 'MULTIPLY OPERATION'
+           MULTIPLY WS-NUM5 BY WS-NUM6 GIVING WS-MUL.
+           DISPLAY 'WS-NUM5: ' WS-NUM5.
+           DISPLAY 'WS-NUM6: ' WS-NUM6.
+           DISPLAY 'WS-MUL : ' WS-MUL.
+      **********************************
+           DISPLAY 'DIVIDE OPERATION'
+           DIVIDE WS-NUM8 BY WS-NUM7 GIVING WS-DIV REMAINDER WS-REM.
+           DISPLAY 'WS-NUM7: ' WS-NUM7.
+           DISPLAY 'WS-NUM8: ' WS-NUM8.
+           DISPLAY 'WS-DIV : ' WS-DIV.
+           DISPLAY 'WS-REM : ' WS-REM.
+      **********************************
+           DISPLAY 'COMPUTE OPERATION'
+           COMPUTE WS-COM = WS-NUM7 - WS-NUM8 + 2 * WS-NUM7.
+           DISPLAY 'WS-NUM7: ' WS-NUM7.
+           DISPLAY 'WS-NUM8: ' WS-NUM8.
+           DISPLAY 'WS-COM : ' WS-COM.
+      **********************************
+           STOP RUN.
+/*
+//COB.SYSLIB   DD DSNAME=SYS1.COBLIB,DISP=SHR
+//GO.SYSOUT   DD SYSOUT=*,DCB=(RECFM=FBA,LRECL=161,BLKSIZE=16100)
+//GO.SYSIN    DD *
+COBOL IS AWESOME
+/*
+//

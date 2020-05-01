@@ -1,0 +1,17 @@
+ IDENTIFICATION DIVISION.
+ PROGRAM-ID. CALLSUB2.
+******************************************************************
+ DATA DIVISION.
+******************************************************************
+ WORKING-STORAGE SECTION.
+ 01 WS-ID       PIC 9(5)   VALUE 00001.
+ 01 WS-NAME     PIC A(15)  VALUE 'DAVE'.
+ 01 WS-SUBPGM   PIC X(8)   VALUE 'CALLSUB3'.
+******************************************************************
+ PROCEDURE DIVISION.
+******************************************************************
+     DISPLAY 'ID  : ' WS-ID.
+     CALL WS-SUBPGM USING BY CONTENT WS-ID, WS-NAME.
+     DISPLAY 'ID  : ' WS-ID.
+     DISPLAY 'NAME: ' WS-NAME.
+     STOP RUN.

@@ -1,0 +1,54 @@
+//ARRAYS01 JOB (COBOL),                                                 
+//             'COBOL ARRAYS',                                          
+//             CLASS=A,                                                 
+//             MSGCLASS=H,                                              
+//             REGION=8M,TIME=1440,                                     
+//             MSGLEVEL=(1,1)                                           
+//ARRAYS   EXEC COBUCG,                                                 
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            
+//COB.SYSPUNCH DD DUMMY                                                 
+//COB.SYSIN    DD *                                                     
+       IDENTIFICATION DIVISION.                                         
+       PROGRAM-ID. ARRAYS.                                              
+      ******************************************************************
+       ENVIRONMENT DIVISION.                                            
+      ******************************************************************
+       DATA DIVISION.                                                   
+      ******************************************************************
+       WORKING-STORAGE SECTION.                                         
+           01 WS-ONEDIM.                                                
+              05 WS-CHAR PIC A(2) OCCURS 5 TIMES.                       
+           01 WS-TWODIM.                                                
+              05 WS-FIRST OCCURS 3 TIMES.                               
+                 10 WS-A PIC A(1).                                      
+                 10 WS-SECOND OCCURS 2 TIMES.                           
+                    15 WS-B PIC X.                                      
+      ******************************************************************
+       PROCEDURE DIVISION.                                              
+      ******************************************************************
+           MOVE 'AABBCCDDEE' TO WS-ONEDIM.                              
+           DISPLAY 'ONE DIMENSION TABLE'.                               
+           DISPLAY '1ST ENTRY IN THE TABLE : ' WS-CHAR (1).             
+           DISPLAY '2ND ENTRY IN THE TABLE : ' WS-CHAR (2).             
+           DISPLAY '3RD ENTRY IN THE TABLE : ' WS-CHAR (3).             
+           DISPLAY '4TH ENTRY IN THE TABLE : ' WS-CHAR (4).             
+           DISPLAY '5TH ENTRY IN THE TABLE : ' WS-CHAR (5).             
+      **********************************                                
+           MOVE 'A12B34C56' TO WS-TWODIM.                               
+           DISPLAY 'TWO DIMENSION TABLE'.                               
+           DISPLAY '1ST ENTRY IN THE TABLE : ' WS-FIRST (1).            
+           DISPLAY '  (1,1)                : ' WS-SECOND (1, 1).        
+           DISPLAY '  (1,2)                : ' WS-SECOND (1, 2).        
+           DISPLAY '2ND ENTRY IN THE TABLE : ' WS-FIRST (2).            
+           DISPLAY '  (2,1)                : ' WS-SECOND (2, 1).        
+           DISPLAY '  (2,2)                : ' WS-SECOND (2, 2).        
+           DISPLAY '3RD ENTRY IN THE TABLE : ' WS-FIRST (3).            
+           DISPLAY '  (3,1)                : ' WS-SECOND (3, 1).        
+           DISPLAY '  (3,2)                : ' WS-SECOND (3, 2).        
+           STOP RUN.                                                    
+/*                                                                      
+//COB.SYSLIB   DD DSNAME=SYS1.COBLIB,DISP=SHR                           
+//GO.SYSOUT   DD SYSOUT=*,DCB=(RECFM=FBA,LRECL=161,BLKSIZE=16100)       
+//GO.SYSIN    DD *                                                      
+/*                                                                      
+//                                                                      

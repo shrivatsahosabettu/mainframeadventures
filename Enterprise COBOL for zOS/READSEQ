@@ -1,0 +1,62 @@
+ IDENTIFICATION DIVISION.
+ PROGRAM-ID. READSEQ.
+******************************************************************
+ ENVIRONMENT DIVISION.
+******************************************************************
+ INPUT-OUTPUT SECTION.
+ FILE-CONTROL.
+     SELECT IN-FILE  ASSIGN TO SEQ.
+******************************************************************
+ DATA DIVISION.
+******************************************************************
+
+ FILE SECTION.
+ FD IN-FILE
+     RECORD CONTAINS 80 CHARACTERS.
+ 01 IN-RECORD.
+     05 PERSON-YEAR    PIC 9999.
+     05 PERSON-MONTH   PIC 99.
+     05 PERSON-DAY     PIC 99.
+     05 PERSON-NAME    PIC A(15).
+     05 PERSON-COUNTRY PIC A(10).
+**********************************
+ WORKING-STORAGE SECTION.
+**********************************
+ 01 SWITCHES.
+     05 EOF-SWITCH     PIC X VALUE "N".
+ 01 COUNTERS.
+     05 REC-COUNTER    PIC 9(3) VALUE 0.
+******************************************************************
+ PROCEDURE DIVISION.
+******************************************************************
+ 000-MAIN.
+     PERFORM 100-INITIALISE.
+     PERFORM 200-PROCESS-RECORDS
+         UNTIL EOF-SWITCH = "Y".
+     PERFORM 300-TERMINATE.
+     STOP RUN.
+**********************************
+ 100-INITIALISE.
+**********************************
+     OPEN INPUT IN-FILE.
+     READ IN-FILE
+         AT END MOVE "Y" TO EOF-SWITCH
+         NOT AT END COMPUTE REC-COUNTER = REC-COUNTER + 1
+     END-READ.
+**********************************
+ 200-PROCESS-RECORDS.
+**********************************
+     DISPLAY 'PERSON-YEAR   : ' PERSON-YEAR
+     DISPLAY 'PERSON-MONTH  : ' PERSON-MONTH
+     DISPLAY 'PERSON-DAY    : ' PERSON-DAY
+     DISPLAY 'PERSON-NAME   : ' PERSON-NAME
+     DISPLAY 'PERSON-COUNTRY: ' PERSON-COUNTRY
+     READ IN-FILE
+         AT END MOVE "Y" TO EOF-SWITCH
+         NOT AT END COMPUTE REC-COUNTER = REC-COUNTER + 1
+     END-READ.
+**********************************
+ 300-TERMINATE.
+**********************************
+     DISPLAY 'TOTAL RECORDS: ' REC-COUNTER.
+     CLOSE IN-FILE.
