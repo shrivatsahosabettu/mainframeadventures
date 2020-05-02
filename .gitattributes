@@ -1,1 +1,10 @@
-CB545 V2 LVL78 for MVS 3.8 Enterprise COBOL for zOS LICENSE README.md linguist-language=COBOL
+*				text=auto
+
+.gitattributes	text
+.gitignore		text
+*.md			text
+LICENSE			text
+
+* linguist-language=COBOL
+
+*.gitattributes linguist-language=gitattributes
