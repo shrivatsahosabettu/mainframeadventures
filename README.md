@@ -7,14 +7,17 @@ I'm by no means an expert on COBOL or mainframes, so use it with caution. My exp
 * **TEMPLATE**: Template with (almost) all DIVISION and SECTION.
 * **CONDITIO**: Example of use of conditional statements (IF/ELSE, IF NOT, SIGN, CLASS, CONDITION-NAME, AND).
 * **ARITHMET**: Example of arithmetic operations (ADD, SUBTRACT, MULTIPLY, DIVIDE, COMPUTE).
+* **ACCEPT**: Accept (receive) a value from SYSIN.
 * **ARRAYS**: Example of arrays (TABLE).
 * **READSEQ**: Example of use of READ and DISPLAY with a Sequential file.
+* **REWRTSEQ**: Example of use REWRITE to change a record on a Sequential file.
 
 # IBM Enterprise COBOL for zOS
 
 * **TEMPLATE**: Template with (almost) all DIVISION and SECTION.
 * **CONDITIO**: Example of use of conditional statements (IF/ELSE, IF NOT, SIGN, CLASS, CONDITION-NAME, EVALUATE, AND/OR).
 * **ARITHMET**: Example of arithmetic operations (ADD, SUBTRACT, MULTIPLY, DIVIDE, COMPUTE).
+* **ACCEPT**: Accept (receive) a value from SYSIN.
 * **ARRAYS**: Example of arrays (TABLE).
 * **STRINGS**: Example of string manipulation.
 * **WRITESEQ**: Example of use WRITE to add records to a Sequential file.

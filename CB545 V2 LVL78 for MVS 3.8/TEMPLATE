@@ -1,45 +1,45 @@
-//TEMPLATE JOB (COBOL),                                                 
-//             'COBOL TEMPLATE',                                        
-//             CLASS=A,                                                 
-//             MSGCLASS=H,                                              
-//             REGION=8M,TIME=1440,                                     
-//             MSGLEVEL=(1,1)                                           
-//DTYPES   EXEC COBUCG,                                                 
-//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            
-//COB.SYSPUNCH DD DUMMY                                                 
-//COB.SYSIN    DD *                                                     
-       IDENTIFICATION DIVISION.                                         
-       PROGRAM-ID. ????????.                                            
-       AUTHOR. ????????????.                                            
-       INSTALLATION. ???????.                                           
-       DATE-WRITTEN. ???????.                                           
-       DATE-COMPILED. ??????.                                           
+//TEMPLATE JOB (COBOL),
+//             'COBOL TEMPLATE',
+//             CLASS=A,
+//             MSGCLASS=H,
+//             REGION=8M,TIME=1440,
+//             MSGLEVEL=(1,1)
+//COMPCOB  EXEC COBUCG,
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'
+//COB.SYSPUNCH DD DUMMY
+//COB.SYSIN    DD *
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ????????.
+       AUTHOR. ????????????.
+       INSTALLATION. ???????.
+       DATE-WRITTEN. ???????.
+       DATE-COMPILED. ??????.
       ******************************************************************
-       ENVIRONMENT DIVISION.                                            
+       ENVIRONMENT DIVISION.
       ******************************************************************
-       CONFIGURATION SECTION.                                           
-       SOURCE-COMPUTER. ??????????.                                     
-       OBJECT-COMPUTER. ??????????.                                     
-       SPECIAL-NAMES. ????????????.                                     
-      **********************************                                
-       INPUT-OUTPUT SECTION.                                            
-       FILE-CONTROL.                                                    
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER. ??????????.
+       OBJECT-COMPUTER. ??????????.
+       SPECIAL-NAMES. ????????????.
+      **********************************
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
       ******************************************************************
-       DATA DIVISION.                                                   
+       DATA DIVISION.
       ******************************************************************
-       FILE SECTION.                                                    
-      **********************************                                
-       WORKING-STORAGE SECTION.                                         
-      **********************************                                
-       LINKAGE SECTION.                                                 
+       FILE SECTION.
+      **********************************
+       WORKING-STORAGE SECTION.
+      **********************************
+       LINKAGE SECTION.
       ******************************************************************
-       PROCEDURE DIVISION.                                              
+       PROCEDURE DIVISION.
       ******************************************************************
-      **********************************                                
-           STOP RUN.                                                    
-/*                                                                      
-//GO.SYSOUT   DD SYSOUT=*                                               
-//GO.SYSIN    DD *                                                      
-COBOL IS AWESOME                                                        
-/*                                                                      
-//                                                                      
+      **********************************
+           STOP RUN.
+/*
+//GO.SYSOUT   DD SYSOUT=*
+//GO.SYSIN    DD *
+COBOL IS AWESOME
+/*
+//

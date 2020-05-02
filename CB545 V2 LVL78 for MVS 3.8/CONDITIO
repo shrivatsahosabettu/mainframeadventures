@@ -1,91 +1,91 @@
-//CONDITIO JOB (COBOL),                                                 
-//             'COBOL CONDITIONALS',                                    
-//             CLASS=A,                                                 
-//             MSGCLASS=H,                                              
-//             REGION=8M,TIME=1440,                                     
-//             MSGLEVEL=(1,1)                                           
-//DTYPES   EXEC COBUCG,                                                 
-//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            
-//COB.SYSPUNCH DD DUMMY                                                 
-//COB.SYSIN    DD *                                                     
-       IDENTIFICATION DIVISION.                                         
-       PROGRAM-ID. CONDITIO.                                            
+//CONDITIO JOB (COBOL),
+//             'COBOL CONDITIONALS',
+//             CLASS=A,
+//             MSGCLASS=H,
+//             REGION=8M,TIME=1440,
+//             MSGLEVEL=(1,1)
+//COMPCOB  EXEC COBUCG,
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'
+//COB.SYSPUNCH DD DUMMY
+//COB.SYSIN    DD *
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. CONDITIO.
       ******************************************************************
-       ENVIRONMENT DIVISION.                                            
+       ENVIRONMENT DIVISION.
       ******************************************************************
       ******************************************************************
-       DATA DIVISION.                                                   
+       DATA DIVISION.
       ******************************************************************
-       WORKING-STORAGE SECTION.                                         
-           01 WS-NUM1     PIC 9(5)  VALUE 10.                           
-           01 WS-NUM2     PIC 9(5)  VALUE 20.                           
-           01 WS-NUM3     PIC 9(5)  VALUE 30.                           
-           01 WS-NUM4     PIC S9(5) VALUE -5.                           
-           01 WS-NUM5     PIC 9(5)  VALUE ZERO.                         
-           01 WS-NUM6     PIC 9(5)  VALUE 12345.                        
-           01 WS-NUM7     PIC 9(5)  VALUE 30.                           
-           01 WS-NUM8     PIC 9(2)  VALUE 1.                            
-           01 WS-ALPHA1   PIC X(5)  VALUE '12345'.                      
-           01 WS-ALPHA2   PIC X(5)  VALUE 'ABCDE'.                      
-           01 WS-NUM9     PIC 9(2).                                     
-              88 WS-OK              VALUES ARE 00 THRU 05.              
-              88 WS-NOK             VALUES ARE 06 THRU 10.              
+       WORKING-STORAGE SECTION.
+           01 WS-NUM1     PIC 9(5)  VALUE 10.
+           01 WS-NUM2     PIC 9(5)  VALUE 20.
+           01 WS-NUM3     PIC 9(5)  VALUE 30.
+           01 WS-NUM4     PIC S9(5) VALUE -5.
+           01 WS-NUM5     PIC 9(5)  VALUE ZERO.
+           01 WS-NUM6     PIC 9(5)  VALUE 12345.
+           01 WS-NUM7     PIC 9(5)  VALUE 30.
+           01 WS-NUM8     PIC 9(2)  VALUE 1.
+           01 WS-ALPHA1   PIC X(5)  VALUE '12345'.
+           01 WS-ALPHA2   PIC X(5)  VALUE 'ABCDE'.
+           01 WS-NUM9     PIC 9(2).
+              88 WS-OK              VALUES ARE 00 THRU 05.
+              88 WS-NOK             VALUES ARE 06 THRU 10.
       ******************************************************************
-       PROCEDURE DIVISION.                                              
+       PROCEDURE DIVISION.
       ******************************************************************
-           IF WS-NUM1 > WS-NUM2 THEN                                    
-             DISPLAY 'WS-NUM1 IS GREATER THAN WS-NUM2'                  
-           ELSE                                                         
-             DISPLAY 'WS-NUM2 IS GREATER THAN WS-NUM1'.                 
-      **********************************                                
-           IF WS-NUM3 IS GREATER THAN WS-NUM7 THEN                      
-               DISPLAY 'WS-NUM3 IS GREATER THAN WS-NUM7'                
-           ELSE                                                         
-             IF WS-NUM3 IS LESS THAN WS-NUM7 THEN                       
-               DISPLAY 'WS-NUM3 IS LESS THAN WS-NUM7'                   
-             ELSE                                                       
-               DISPLAY 'WS-NUM3 IS EQUAL TO WS-NUM7'.                   
-      **********************************                                
-           IF NOT WS-NUM1 < WS-NUM3 THEN                                
-             DISPLAY 'WS-NUM2 IS NOT LESS THAN WS-NUM3'                 
-           ELSE                                                         
-             DISPLAY 'WS-NUM2 IS LESS THAN WS-NUM3'.                    
-      **********************************                                
-           IF WS-NUM3 IS POSITIVE THEN                                  
-             DISPLAY 'WS-NUM3 IS POSITIVE'.                             
-           IF WS-NUM4 IS NEGATIVE THEN                                  
-             DISPLAY 'WS-NUM4 IS NEGATIVE'.                             
-           IF WS-NUM4 IS ZERO THEN                                      
-             DISPLAY 'WS-NUM4 IS ZERO'.                                 
-           IF WS-NUM1 IS NOT ZERO THEN                                  
-             DISPLAY 'WS-NUM1 IS NOT ZERO'.                             
-      **********************************                                
-           IF WS-ALPHA1 IS ALPHABETIC THEN                              
-             DISPLAY 'WS-ALPHA1 IS ALPHABETIC'.                         
-           IF WS-ALPHA1 IS NUMERIC THEN                                 
-             DISPLAY 'WS-ALPHA1 IS NUMERIC'.                            
-           IF WS-ALPHA2 IS ALPHABETIC THEN                              
-             DISPLAY 'WS-ALPHA2 IS ALPHABETIC'.                         
-           IF WS-ALPHA2 IS NUMERIC THEN                                 
-             DISPLAY 'WS-ALPHA2 IS NUMERIC'.                            
-           IF WS-NUM6 IS NUMERIC THEN                                   
-             DISPLAY 'WS-NUM6 IS NUMERIC'.                              
-      **********************************                                
-           MOVE 02 TO WS-NUM9.                                          
-           IF WS-OK                                                     
-             DISPLAY 'WS-NUM9 IS OK'.                                   
-           IF WS-NOK                                                    
-             DISPLAY 'WS-NUM9 IS NOT OK'.                               
-           MOVE 09 TO WS-NUM9.                                          
-           IF WS-OK                                                     
-             DISPLAY 'WS-NUM9 IS OK'.                                   
-           IF WS-NOK                                                    
-             DISPLAY 'WS-NUM9 IS NOT OK'.                               
-      **********************************                                
-           IF WS-NUM3 > WS-NUM2 AND WS-NUM2 > 15 THEN                   
-             DISPLAY 'WS-NUM3 IS AT LEAST GREATER THAN 15'.             
-      **********************************                                
-           STOP RUN.                                                    
-/*                                                                      
+           IF WS-NUM1 > WS-NUM2 THEN
+             DISPLAY 'WS-NUM1 IS GREATER THAN WS-NUM2'
+           ELSE
+             DISPLAY 'WS-NUM2 IS GREATER THAN WS-NUM1'.
+      **********************************
+           IF WS-NUM3 IS GREATER THAN WS-NUM7 THEN
+               DISPLAY 'WS-NUM3 IS GREATER THAN WS-NUM7'
+           ELSE
+             IF WS-NUM3 IS LESS THAN WS-NUM7 THEN
+               DISPLAY 'WS-NUM3 IS LESS THAN WS-NUM7'
+             ELSE
+               DISPLAY 'WS-NUM3 IS EQUAL TO WS-NUM7'.
+      **********************************
+           IF NOT WS-NUM1 < WS-NUM3 THEN
+             DISPLAY 'WS-NUM2 IS NOT LESS THAN WS-NUM3'
+           ELSE
+             DISPLAY 'WS-NUM2 IS LESS THAN WS-NUM3'.
+      **********************************
+           IF WS-NUM3 IS POSITIVE THEN
+             DISPLAY 'WS-NUM3 IS POSITIVE'.
+           IF WS-NUM4 IS NEGATIVE THEN
+             DISPLAY 'WS-NUM4 IS NEGATIVE'.
+           IF WS-NUM4 IS ZERO THEN
+             DISPLAY 'WS-NUM4 IS ZERO'.
+           IF WS-NUM1 IS NOT ZERO THEN
+             DISPLAY 'WS-NUM1 IS NOT ZERO'.
+      **********************************
+           IF WS-ALPHA1 IS ALPHABETIC THEN
+             DISPLAY 'WS-ALPHA1 IS ALPHABETIC'.
+           IF WS-ALPHA1 IS NUMERIC THEN
+             DISPLAY 'WS-ALPHA1 IS NUMERIC'.
+           IF WS-ALPHA2 IS ALPHABETIC THEN
+             DISPLAY 'WS-ALPHA2 IS ALPHABETIC'.
+           IF WS-ALPHA2 IS NUMERIC THEN
+             DISPLAY 'WS-ALPHA2 IS NUMERIC'.
+           IF WS-NUM6 IS NUMERIC THEN
+             DISPLAY 'WS-NUM6 IS NUMERIC'.
+      **********************************
+           MOVE 02 TO WS-NUM9.
+           IF WS-OK
+             DISPLAY 'WS-NUM9 IS OK'.
+           IF WS-NOK
+             DISPLAY 'WS-NUM9 IS NOT OK'.
+           MOVE 09 TO WS-NUM9.
+           IF WS-OK
+             DISPLAY 'WS-NUM9 IS OK'.
+           IF WS-NOK
+             DISPLAY 'WS-NUM9 IS NOT OK'.
+      **********************************
+           IF WS-NUM3 > WS-NUM2 AND WS-NUM2 > 15 THEN
+             DISPLAY 'WS-NUM3 IS AT LEAST GREATER THAN 15'.
+      **********************************
+           STOP RUN.
+/*
 //GO.SYSOUT   DD SYSOUT=*
-//                                                                      
+//

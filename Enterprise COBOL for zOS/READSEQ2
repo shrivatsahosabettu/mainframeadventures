@@ -1,73 +1,74 @@
- IDENTIFICATION DIVISION.                                         
- PROGRAM-ID. READSEQ2.                                            
+ IDENTIFICATION DIVISION.
+ PROGRAM-ID. READSEQ2.
 ******************************************************************
- ENVIRONMENT DIVISION.                                            
+ ENVIRONMENT DIVISION.
 ******************************************************************
- INPUT-OUTPUT SECTION.                                            
- FILE-CONTROL.                                                    
-     SELECT IN-FILE ASSIGN TO SEQ                                 
-     ORGANIZATION IS SEQUENTIAL.                                  
+ INPUT-OUTPUT SECTION.
+ FILE-CONTROL.
+     SELECT IN-FILE ASSIGN TO SEQ
+     ORGANIZATION IS SEQUENTIAL.
 ******************************************************************
- DATA DIVISION.                                                   
+ DATA DIVISION.
 ******************************************************************
-                                                                  
- FILE SECTION.                                                    
- FD IN-FILE                                                       
-     RECORD CONTAINS 80 CHARACTERS.                               
- 01 IN-RECORD.                                                    
-     05 PERSON-DOB.                                               
-        10 PERSON-YEAR    PIC 9999.                               
-        10 PERSON-MONTH   PIC 99.                                 
-        10 PERSON-DAY     PIC 99.                                 
-     05 PERSON-NAME       PIC A(15).                              
-     05 PERSON-COUNTRY    PIC A(10).                              
-**********************************                                
- WORKING-STORAGE SECTION.                                         
-**********************************                                
- 01 SWITCHES.                                                     
-     05 EOF-SWITCH        PIC X VALUE "N".                        
- 01 COUNTERS.                                                     
-     05 REC-COUNTER       PIC 9(3) VALUE 0.                       
- 77 WS-DOB                PIC X(10).                              
- 77 WS-POS                PIC S9(3) VALUE 1.                      
+
+ FILE SECTION.
+ FD IN-FILE
+     RECORD CONTAINS 80 CHARACTERS.
+ 01 IN-RECORD.
+     05 PERSON-DOB.
+        10 PERSON-YEAR    PIC 9999.
+        10 PERSON-MONTH   PIC 99.
+        10 PERSON-DAY     PIC 99.
+     05 PERSON-NAME       PIC A(15).
+     05 PERSON-COUNTRY    PIC A(10).
+**********************************
+ WORKING-STORAGE SECTION.
+**********************************
+ 01 SWITCHES.
+     05 EOF-SWITCH        PIC X VALUE "N".
+ 01 COUNTERS.
+     05 REC-COUNTER       PIC 9(3) VALUE 0.
+ 77 WS-DOB                PIC X(10).
+ 77 WS-POS                PIC S9(3) VALUE 1.
 ******************************************************************
- PROCEDURE DIVISION.                                              
+ PROCEDURE DIVISION.
 ******************************************************************
- 000-MAIN.                                                        
-     PERFORM 100-INITIALISE.                                      
-     PERFORM 200-PROCESS-RECORDS                                  
-         UNTIL EOF-SWITCH = "Y".                                  
-     PERFORM 300-TERMINATE.                                       
-     STOP RUN.                                                    
-**********************************                                
- 100-INITIALISE.                                                  
-**********************************                                
-     OPEN INPUT IN-FILE.                                          
-     READ IN-FILE                                                 
-         AT END MOVE "Y" TO EOF-SWITCH                            
-         NOT AT END COMPUTE REC-COUNTER = REC-COUNTER + 1         
-     END-READ.                                                    
-**********************************                                
- 200-PROCESS-RECORDS.                                             
-**********************************                                
-     MOVE 1 TO WS-POS.                                            
-     STRING                                                       
-            PERSON-DAY   DELIMITED BY SIZE                        
-            '/'          DELIMITED BY SIZE                        
-            PERSON-MONTH DELIMITED BY SIZE                        
-            '/'          DELIMITED BY SIZE                        
-            PERSON-YEAR  DELIMITED BY SIZE                        
-     INTO WS-DOB                                                  
-     WITH POINTER WS-POS.                                         
-     DISPLAY 'NAME   : ' PERSON-NAME                              
-     DISPLAY 'COUNTRY: ' PERSON-COUNTRY                           
-     DISPLAY 'DOB    : ' WS-DOB                                   
-     READ IN-FILE                                                 
-         AT END MOVE "Y" TO EOF-SWITCH                            
-         NOT AT END COMPUTE REC-COUNTER = REC-COUNTER + 1         
-     END-READ.                                                    
-**********************************                                
- 300-TERMINATE.                                                   
-**********************************                                
-     DISPLAY 'TOTAL RECORDS: ' REC-COUNTER.                       
-     CLOSE IN-FILE.                                               
+ 000-MAIN.
+     PERFORM 100-INITIALISE.
+     PERFORM 200-PROCESS-RECORDS
+         UNTIL EOF-SWITCH = "Y".
+     PERFORM 300-TERMINATE.
+**********************************
+     STOP RUN.
+**********************************
+ 100-INITIALISE.
+**********************************
+     OPEN INPUT IN-FILE.
+     READ IN-FILE
+         AT END MOVE "Y" TO EOF-SWITCH
+         NOT AT END COMPUTE REC-COUNTER = REC-COUNTER + 1
+     END-READ.
+**********************************
+ 200-PROCESS-RECORDS.
+**********************************
+     MOVE 1 TO WS-POS.
+     STRING
+            PERSON-DAY   DELIMITED BY SIZE
+            '/'          DELIMITED BY SIZE
+            PERSON-MONTH DELIMITED BY SIZE
+            '/'          DELIMITED BY SIZE
+            PERSON-YEAR  DELIMITED BY SIZE
+     INTO WS-DOB
+     WITH POINTER WS-POS.
+     DISPLAY 'NAME   : ' PERSON-NAME
+     DISPLAY 'COUNTRY: ' PERSON-COUNTRY
+     DISPLAY 'DOB    : ' WS-DOB
+     READ IN-FILE
+         AT END MOVE "Y" TO EOF-SWITCH
+         NOT AT END COMPUTE REC-COUNTER = REC-COUNTER + 1
+     END-READ.
+**********************************
+ 300-TERMINATE.
+**********************************
+     DISPLAY 'TOTAL RECORDS: ' REC-COUNTER.
+     CLOSE IN-FILE.

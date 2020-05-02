@@ -13,5 +13,6 @@
      DISPLAY 'ID  : ' WS-ID.
      CALL WS-SUBPGM USING WS-ID, WS-NAME.
      DISPLAY 'ID  : ' WS-ID.
-     DISPLAY 'NAME: ' WS-NAME.
+     DISPLAY 'NAME: ' WS-NAME
+**********************************
      STOP RUN.

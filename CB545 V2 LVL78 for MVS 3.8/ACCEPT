@@ -1,0 +1,32 @@
+//ACCEPT01 JOB (COBOL),                                                 
+//             'ACCEPT FROM SYSIN',                                     
+//             CLASS=A,                                                 
+//             MSGCLASS=H,                                              
+//             REGION=8M,TIME=1440,                                     
+//             MSGLEVEL=(1,1)                                           
+//COMPCOB  EXEC COBUCG,                                                 
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            
+//COB.SYSPUNCH DD DUMMY                                                 
+//COB.SYSIN    DD *                                                     
+       IDENTIFICATION DIVISION.                                         
+       PROGRAM-ID. ACCEPT.                                            
+      ******************************************************************
+       ENVIRONMENT DIVISION.                                            
+      ******************************************************************
+       DATA DIVISION.                                                   
+      ******************************************************************
+       WORKING-STORAGE SECTION.                                         
+           01 WS-ACCEPT   PIC A(16).                                    
+      ******************************************************************
+       PROCEDURE DIVISION.                                              
+      ******************************************************************
+           ACCEPT WS-ACCEPT.                                            
+           DISPLAY 'WS-ACCEPT: ' WS-ACCEPT.                             
+      **********************************                                
+           STOP RUN.                                                    
+/*                                                                      
+//GO.SYSOUT   DD SYSOUT=*                                               
+//GO.SYSIN    DD *                                                      
+COBOL IS AWESOME                                                        
+/*                                                                      
+//                                                                      

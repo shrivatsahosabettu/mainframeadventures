@@ -38,6 +38,7 @@
          UNTIL EOF-SWITCH = "Y".
      PERFORM 600-CLOSE-FILE.
      DISPLAY 'TOTAL RECORDS: ' REC-COUNTER.
+**********************************
      STOP RUN.
 **********************************
  100-OPEN-FILE.
@@ -78,7 +79,7 @@
 **********************************
      MOVE 1969        TO PERSON-YEAR.
      MOVE 3           TO PERSON-MONTH.
-     MOVE 27          TO PERSON-DAY.                              
+     MOVE 27          TO PERSON-DAY.
      MOVE 'JANE DOE'  TO PERSON-NAME.
      MOVE 'UK'        TO PERSON-COUNTRY.
      DISPLAY '**** RECORD CHANGED ***'

@@ -1,23 +1,21 @@
 //ARITHMET JOB (COBOL),
-//             'COBOL DATATYPES',
+//             'COBOL ARITHMETICS',
 //             CLASS=A,
 //             MSGCLASS=H,
 //             REGION=8M,TIME=1440,
 //             MSGLEVEL=(1,1)
-//ARITHM   EXEC COBUCG,
+//COMPCOB  EXEC COBUCG,
 //         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'
 //COB.SYSPUNCH DD DUMMY
 //COB.SYSIN    DD *
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. DATATYPS.
+       PROGRAM-ID. ARITHMET.
       ******************************************************************
        ENVIRONMENT DIVISION.
       ******************************************************************
        DATA DIVISION.
       ******************************************************************
        WORKING-STORAGE SECTION.
-           01 WS-ACCEPT   PIC A(16).
-           01 WS-NAME     PIC A(16).
            01 WS-NUM1     PIC 9(5) VALUE 10.
            01 WS-NUM2     PIC 9(5) VALUE 20.
            01 WS-NUM3     PIC 9(5) VALUE 30.
@@ -35,13 +33,6 @@
       ******************************************************************
        PROCEDURE DIVISION.
       ******************************************************************
-           ACCEPT WS-ACCEPT.
-           MOVE WS-ACCEPT TO WS-NAME.
-           ACCEPT WS-ACCEPT.
-           MOVE WS-ACCEPT TO WS-NAME.
-           DISPLAY 'SPEAK, FRIEND, AND ENTER'.
-           DISPLAY 'WS-ACCEPT: ' WS-ACCEPT.
-           DISPLAY 'WS-NAME  : ' WS-NAME.
            DISPLAY 'WS-NUM1: ' WS-NUM1.
            DISPLAY 'WS-NUM2: ' WS-NUM2.
            DISPLAY 'WS-NUM3: ' WS-NUM3.
@@ -87,9 +78,5 @@
       **********************************
            STOP RUN.
 /*
-//COB.SYSLIB   DD DSNAME=SYS1.COBLIB,DISP=SHR
-//GO.SYSOUT   DD SYSOUT=*,DCB=(RECFM=FBA,LRECL=161,BLKSIZE=16100)
-//GO.SYSIN    DD *
-COBOL IS AWESOME
-/*
+//GO.SYSOUT   DD SYSOUT=*
 //

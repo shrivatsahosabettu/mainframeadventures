@@ -34,6 +34,7 @@
      PERFORM 200-PROCESS-RECORDS
          UNTIL EOF-SWITCH = "Y".
      PERFORM 300-TERMINATE.
+**********************************
      STOP RUN.
 **********************************
  100-INITIALISE.
