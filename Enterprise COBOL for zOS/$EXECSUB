@@ -1,0 +1,14 @@
+//EXECSUB  JOB ,'EXECUTE COBOL SUBMIT',           
+//             CLASS=A,MSGCLASS=H,NOTIFY=&SYSUID  
+//************************************************
+//* CHANGE THESE 2 VARIABLES BELOW AND SUBMIT     
+//         SET MYDSN=changeme!!!
+//         SET MYPGM=SUBMIJCL                     
+//************************************************
+//*    EXECUTE                                    
+//************************************************
+//COBOL   EXEC PGM=&MYPGM                         
+//STEPLIB   DD DISP=SHR,DSNAME=&MYDSN             
+//SYSPRINT  DD SYSOUT=*                           
+//JCLDD     DD SYSOUT=(*,INTRDR)                  
+//                                                

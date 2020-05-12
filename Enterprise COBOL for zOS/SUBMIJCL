@@ -1,0 +1,54 @@
+ IDENTIFICATION DIVISION.                                               
+ PROGRAM-ID. SUBMIJCL.                                                  
+******************************************************************      
+ ENVIRONMENT DIVISION.                                                  
+******************************************************************      
+ INPUT-OUTPUT SECTION.                                                  
+ FILE-CONTROL.                                                          
+     SELECT JCLFILE ASSIGN TO JCLDD.                                    
+******************************************************************      
+ DATA DIVISION.                                                         
+******************************************************************      
+ FILE SECTION.                                                          
+ FD  JCLFILE                                                            
+     RECORD CONTAINS 80 CHARACTERS                                      
+     RECORDING MODE IS F.                                               
+ 01  OUTPUT-REC PIC X(80).                                              
+**********************************                                      
+ WORKING-STORAGE SECTION.                                               
+ 01  JCLREC     PIC X(80).                                              
+**********************************                                      
+******************************************************************      
+ PROCEDURE DIVISION.                                                    
+******************************************************************      
+ 000-MAIN.                                                              
+     PERFORM 100-OPEN-OUTPUT-JCL.                                       
+     PERFORM 200-WRITE-JCLRECORDS.                                      
+     PERFORM 300-CLOSE-OUTPUT-JCL.                                      
+     STOP RUN.                                                          
+**********************************                                      
+ 100-OPEN-OUTPUT-JCL.                                                   
+**********************************                                      
+     OPEN OUTPUT JCLFILE.                                               
+**********************************                                      
+ 200-WRITE-JCLRECORDS.                                                  
+**********************************                                      
+     MOVE "//DUMMYJCL JOB ,'COBOL'," TO JCLREC.                         
+     WRITE OUTPUT-REC FROM JCLREC.                                      
+                                                                        
+     MOVE "//             CLASS=A,MSGCLASS=H,"  TO JCLREC.              
+     WRITE OUTPUT-REC FROM JCLREC.                                      
+     MOVE "//             NOTIFY=&SYSUID"  TO JCLREC.                   
+     WRITE OUTPUT-REC FROM JCLREC.                                      
+     MOVE "//STEP1   EXEC PGM=IEFBR14" TO JCLREC.                       
+     WRITE OUTPUT-REC FROM JCLREC.                                      
+     MOVE "//SYSPRINT  DD SYSOUT=*" TO JCLREC.                          
+     WRITE OUTPUT-REC FROM JCLREC.                                      
+     MOVE "//SYSABEND  DD SYSOUT=*" TO JCLREC.                          
+     WRITE OUTPUT-REC FROM JCLREC.                                      
+     MOVE "//" TO JCLREC.                                               
+     WRITE OUTPUT-REC FROM JCLREC.                                      
+**********************************                                      
+ 300-CLOSE-OUTPUT-JCL.                                                  
+**********************************                                      
+     CLOSE JCLFILE.                                                     

@@ -1,8 +1,8 @@
 This are just some examples I'm putting together meanwhile I re-learn COBOL.
 
-I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was more than 20 years ago in OS/390 and AS/400
+I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 in OS/390 and AS/400
 
-# COBOL V2 for MVS 3.8
+# OS/VS COBOL V1R2M4 (Prod# 5740-CB1) for MVS 3.8
 
 * **TEMPLATE**: Template with (almost) all DIVISION and SECTION.
 * **CONDITIO**: Example of use of conditional statements (IF/ELSE, IF NOT, SIGN, CLASS, CONDITION-NAME, AND).
@@ -27,7 +27,8 @@ I'm by no means an expert on COBOL or mainframes, so use it with caution. My exp
 * **CALLSUB1**: Example of calling by REFERENCE a COBOL subroutine.
 * **CALLSUB2**: Example of calling by CONTENT a COBOL subroutine.
 * **CALLSUB3**: Subroutine to be called (cannot be executed independently).
-
+* **SUBMIJCL**: Submit a JCL via Internal Reader (INTRDR).
+* **$EXECSUB**: JCL to execute SUBMIJCL.
 
 More to come... *soon*
 
