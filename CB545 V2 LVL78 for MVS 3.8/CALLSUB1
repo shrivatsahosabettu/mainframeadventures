@@ -1,0 +1,36 @@
+//CALLSUB1 JOB (COBOL),                                                 
+//             'CALL BY REFERENCE',                                     
+//             CLASS=A,MSGCLASS=H,                                      
+//             MSGLEVEL=(1,1)                                           
+//COMPCOB  EXEC COBUCG,                                                 
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            
+//COB.SYSPUNCH DD DUMMY                                                 
+//COB.SYSIN DD *                                                        
+      ******************************************************************
+       IDENTIFICATION DIVISION.                                         
+      ******************************************************************
+       PROGRAM-ID. 'CALLSUB1'.                                          
+      ******************************************************************
+       ENVIRONMENT DIVISION.                                            
+      ******************************************************************
+      ******************************************************************
+       DATA DIVISION.                                                   
+      ******************************************************************
+       WORKING-STORAGE SECTION.                                         
+           01 WS-ID         PIC 9(5)   VALUE 00001.                     
+           01 WS-NAME       PIC A(15)  VALUE 'DAVE'.                    
+           01 WS-SUBPGM     PIC X(8)   VALUE 'CALLSUB3'.                
+      ******************************************************************
+       PROCEDURE DIVISION.                                              
+      ******************************************************************
+           DISPLAY 'WS-ID: ' WS-ID.                                     
+           DISPLAY 'WS-NAME: ' WS-NAME.                                 
+           CALL 'CALLSUB3' USING WS-ID, WS-NAME.                        
+           DISPLAY 'WS-ID  : ' WS-ID.                                   
+           DISPLAY 'WS-NAME: ' WS-NAME.                                 
+           STOP RUN.                                                    
+/*                                                                      
+//COB.SYSLIB DD DISP=SHR,DSN=DASTA.PROGRAM.COBLOAD                      
+//GO.SYSLIB DD DISP=SHR,DSN=DASTA.PROGRAM.COBLOAD                       
+//GO.SYSOUT   DD SYSOUT=*                                               
+//                                                                      

@@ -11,6 +11,8 @@ I'm by no means an expert on COBOL or mainframes, so use it with caution. My exp
 * **ARRAYS**: Example of arrays (TABLE).
 * **READSEQ**: Example of use of READ and DISPLAY with a Sequential file.
 * **REWRTSEQ**: Example of use REWRITE to change a record on a Sequential file.
+* **CALLSUB1**: Example of calling by REFERENCE a COBOL subroutine.
+* **CALLSUB3**: Subroutine to be called (cannot be executed independently).
 
 # IBM Enterprise COBOL for zOS
 

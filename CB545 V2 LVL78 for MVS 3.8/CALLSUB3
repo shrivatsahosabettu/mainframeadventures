@@ -1,0 +1,27 @@
+//CALLSUB3 JOB (COBOL),                                                 
+//             'COBOL TO BE CALLED',                                    
+//             CLASS=A,MSGCLASS=H,                                      
+//             MSGLEVEL=(1,1)                                           
+//COMPLINK EXEC COBLINK,MBR='CALLSUB3',HLQ='DASTA'                      
+//COB.SYSIN DD *                                                        
+       IDENTIFICATION DIVISION.                                         
+       PROGRAM-ID. 'CALLSUB3'.                                          
+      ******************************************************************
+       ENVIRONMENT DIVISION.                                            
+      ******************************************************************
+      ******************************************************************
+       DATA DIVISION.                                                   
+      ******************************************************************
+       LINKAGE SECTION.                                                 
+           01 LS-ID         PIC 9(5).                                   
+           01 LS-NAME       PIC A(15).                                  
+      ******************************************************************
+       PROCEDURE DIVISION USING LS-ID, LS-NAME.                         
+      ******************************************************************
+           DISPLAY 'RECEIVED LS-ID: ' LS-ID.                            
+           MOVE 12345 TO LS-ID.                                         
+       999-EXIT.                                                        
+           EXIT PROGRAM.                                                
+//LKED.SYSLIB DD DISP=SHR,DSNAME=SYS1.COBLIB                            
+//            DD DISP=SHR,DSNAME=SYS1.LINKLIB                           
+//                                                                      

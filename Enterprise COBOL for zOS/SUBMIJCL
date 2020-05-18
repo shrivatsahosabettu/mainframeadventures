@@ -35,7 +35,6 @@
 **********************************                                      
      MOVE "//DUMMYJCL JOB ,'COBOL'," TO JCLREC.                         
      WRITE OUTPUT-REC FROM JCLREC.                                      
-                                                                        
      MOVE "//             CLASS=A,MSGCLASS=H,"  TO JCLREC.              
      WRITE OUTPUT-REC FROM JCLREC.                                      
      MOVE "//             NOTIFY=&SYSUID"  TO JCLREC.                   
