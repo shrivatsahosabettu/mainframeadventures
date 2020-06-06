@@ -1,0 +1,23 @@
+*----------------------------------------------------------------------*
+* MVS 3.8j TOOLBOX V1R1M0                                              *
+*----------------------------------------------------------------------*
+
+-= Backup =-
+PDS2TAPE : Backup a PDS to Tape.
+TAPE2PDS : Restore a PDS from Tape (from a backup created by PDS2TAPE).
+TAPE2VOL : Restore a Volume from Tape (from backup created by VOL2TAPE).
+VOL2TAPE : Backup an entire Volume to Tape.
+
+-= General =-
+CLEARERP : Clear ERP (Error Recovery Program) log file.
+PRINTSRC : Print contents of a member. Usuful for printing source code.
+
+
+
+Installation
+
+In the folder release of this repo there is a HET (Hercules Emulated Tape) tape: TOOLBOX.HET.
+
+1) Mount the tape in your Hercules console: devinit 0480 TOOLBOX.HET
+2) Copy & Paste src/TAPE2PDS to your MVS.
+3) This will create the data set HERC01.TOOLBOX.

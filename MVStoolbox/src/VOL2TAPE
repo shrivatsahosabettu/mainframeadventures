@@ -1,0 +1,20 @@
+//VOL2TAPE  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000106
+//*                                                                     00000206
+//* *************************************************                   00000306
+//*  BACKUP AND ENTIRE VOLUME TO TAPE                                   00000406
+//*    1) CREATE TAPE WITH HETINIT IN HOST COMPUTER                     00000506
+//*    2) LOAD TAPE WITH DEVINIT IN HERCULES CONSOLE                    00000606
+//*    3) THEN SUBMIT THIS JCL                                          00000706
+//*    CHANGE VOL=SER=                                                  00000806
+//*           DSN=                                                      00000906
+//* *************************************************                   00001006
+//*                                                                     00001106
+//IEHDASDR EXEC PGM=IEHDASDR,REGION=4096K                               00001203
+//SYSPRINT   DD  SYSOUT=A                                               00001306
+//DASD       DD  UNIT=3350,VOL=SER=WORK00,DISP=OLD                      00001406
+//TAPE       DD DSN=WORK00.DUMP,UNIT=TAPE,DISP=(,KEEP),                 00001506
+//           VOL=SER=WRK000,DCB=(LRECL=0,BLKSIZE=32480,RECFM=U)         00001606
+//SYSIN      DD  *                                                      00001706
+  DUMP FROMDD=DASD,TODD=TAPE                                            00001804
+/*                                                                      00001903
+//                                                                      00002003

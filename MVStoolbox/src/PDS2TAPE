@@ -1,0 +1,21 @@
+//PDS2TAPE  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000102
+//*                                                                     00000202
+//* *************************************************                   00000302
+//*  BACKUP PDS TO TAPE                                                 00000402
+//*    1) CREATE TAPE WITH HETINIT IN HOST COMPUTER                     00000502
+//*    2) LOAD TAPE WITH DEVINIT IN HERCULES CONSOLE                    00000602
+//*    3) THEN SUBMIT THIS JCL                                          00000702
+//*    CHANGE VOL=SER=                                                  00000802
+//*           DSN=                                                      00000902
+//* *************************************************                   00001002
+//*                                                                     00001102
+//COPY   EXEC PGM=IEBCOPY,REGION=720K                                   00001201
+//SYSPRINT DD SYSOUT=*                                                  00001301
+//PDS      DD DSN=HERC01.TOOLBOX,DISP=SHR                               00001401
+//TAPE     DD UNIT=TAPE,DISP=NEW,DSN=HERC01.TOOLBOX,                    00001501
+//            VOL=SER=TOOLBX,LABEL=(,SL)                                00001601
+//SYSUT3   DD UNIT=SYSDA,SPACE=(80,(60,45)),DISP=(NEW,DELETE)           00001701
+//SYSIN    DD *                                                         00001801
+  COPY INDD=PDS,OUTDD=TAPE                                              00001901
+/*                                                                      00002001
+//                                                                      00002101

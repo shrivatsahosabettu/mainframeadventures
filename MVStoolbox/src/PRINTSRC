@@ -1,0 +1,13 @@
+//PRINTSR  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=A                        00000113
+//*                                                                     00000213
+//* ***********************************************                     00000313
+//*  PRINT THE CONTENTS OF A MEMBER                                     00000413
+//*    USEFUL FOR PRINTING SOURCE CODE OF PROGRAMS                      00000513
+//* ***********************************************                     00000613
+//*                                                                     00000713
+//STEP1    EXEC PGM=IEBGENER                                            00000800
+//SYSPRINT DD SYSOUT=A                                                  00000913
+//SYSIN    DD DUMMY                                                     00001000
+//SYSUT1   DD DISP=SHR,DSNAME=HERC01.TOOLBOX(VOL2TAPE)                  00001113
+//SYSUT2   DD SYSOUT=A                                                  00001213
+//                                                                      00001313

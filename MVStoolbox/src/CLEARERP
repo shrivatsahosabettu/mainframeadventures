@@ -1,0 +1,12 @@
+//CLEARERP  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* *************************************************                   00000300
+//*  CLEARS ERP (Error Recovery Program) LOG FILE                       00000400
+//*    THE LOG FILE IS SYS1.LOGREC IN MVSRES VOLUME                     00000500
+//*      AND CONTAINS RECORDS ABOUT HARDWARE,                           00000600
+//*      SOFTWARE AND SYSTEM ERRORS AND FAILURES                        00000700
+//* *************************************************                   00000800
+//*                                                                     00000900
+//CLEAR    EXEC PGM=IFCDIP00                                            00001000
+//SERERDS    DD DSN=SYS1.LOGREC,DISP=OLD,VOL=SER=MVSRES,UNIT=3350       00001100
+//                                                                      00001200

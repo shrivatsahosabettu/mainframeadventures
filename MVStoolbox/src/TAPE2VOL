@@ -1,0 +1,19 @@
+//TAPE2VOL  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00001104
+//*                                                                     00001204
+//* *************************************************                   00001304
+//*  RESTORE FROM TAPE TO VOLUME                                        00001404
+//*    1) LOAD TAPE WITH DEVINIT IN HERCULES CONSOLE                    00001504
+//*    3) THEN SUBMIT THIS JCL                                          00001604
+//*    CHANGE VOL=SER=                                                  00001704
+//*           DSN=                                                      00001804
+//* *************************************************                   00001904
+//*                                                                     00002004
+//IEHDASDR EXEC PGM=IEHDASDR,REGION=4096K                               00002101
+//SYSPRINT   DD SYSOUT=A                                                00002201
+//DASD       DD UNIT=3350,VOL=SER=WORK00,DISP=OLD                       00002302
+//TAPE       DD DSN=WORK00.DUMP,UNIT=TAPE,DISP=(,KEEP),                 00002401
+//              VOL=SER=WRK00,DCB=(LRECL=0,BLKSIZE=32480,RECFM=U)       00002501
+//SYSIN      DD  *                                                      00002601
+  RESTORE FROMDD=TAPE,TODD=DASD                                         00002703
+/*                                                                      00002801
+//                                                                      00002901

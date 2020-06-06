@@ -32,6 +32,12 @@ I'm by no means an expert on COBOL or mainframes, so use it with caution. My exp
 * **SUBMIJCL**: Submit a JCL via Internal Reader (INTRDR).
 * **$EXECSUB**: JCL to execute SUBMIJCL.
 
+# MVS 3.8j TOOLBOX
+
+Useful JCLs for MVS 3.8j
+
+---
+
 More to come... *soon*
 
 Many thanks to the folks at https://groups.io/g/H390-MVS that helped me to finish READSEQ for MVS 3.8
