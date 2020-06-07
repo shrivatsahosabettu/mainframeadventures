@@ -1,0 +1,37 @@
+//EXAMIN01 JOB (COBOL),                                                 00000100
+//             'EXAMINE',                                               00000200
+//             CLASS=A,                                                 00000300
+//             MSGCLASS=H,                                              00000400
+//             REGION=8M,TIME=1440,                                     00000500
+//             MSGLEVEL=(1,1)                                           00000600
+//COMPCOB  EXEC COBUCG,                                                 00000700
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            00000800
+//COB.SYSPUNCH DD DUMMY                                                 00000900
+//COB.SYSIN    DD *                                                     00001000
+       IDENTIFICATION DIVISION.                                         00001100
+       PROGRAM-ID. EXAMIN.                                              00001200
+      ******************************************************************00001300
+       ENVIRONMENT DIVISION.                                            00001400
+      ******************************************************************00001500
+       DATA DIVISION.                                                   00001600
+      ******************************************************************00001700
+       WORKING-STORAGE SECTION.                                         00001800
+           01 WS-TEXT    PIC X(24) VALUE 'THIS IS A 24 CHARS TEXT.'.    00001900
+      ******************************************************************00002000
+       PROCEDURE DIVISION.                                              00002100
+      ******************************************************************00002200
+           DISPLAY 'EXAMINE TEXT: ' WS-TEXT.                            00002300
+           EXAMINE WS-TEXT TALLYING ALL ' '.                            00002400
+           DISPLAY 'NUMBER OF SPACES: ' TALLY.                          00002500
+           EXAMINE WS-TEXT TALLYING ALL 'A'.                            00002600
+           DISPLAY 'NUMBER OF OCCURRENCES OF LETTER A: ' TALLY.         00002700
+           EXAMINE WS-TEXT TALLYING UNTIL FIRST ' '.                    00002800
+           DISPLAY 'POSITION OF FIRST SPACE: ' TALLY.                   00002900
+           EXAMINE WS-TEXT REPLACING ALL 'S' BY 'Z'.                    00003000
+           DISPLAY 'S REPLACED BY Z: ' WS-TEXT.                         00003100
+      **********************************                                00003200
+           STOP RUN.                                                    00003300
+/*                                                                      00003400
+//GO.SYSOUT   DD SYSOUT=*                                               00003500
+/*                                                                      00003600
+//                                                                      00003700

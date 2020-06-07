@@ -9,6 +9,7 @@ I'm by no means an expert on COBOL or mainframes, so use it with caution. My exp
 * **ARITHMET**: Example of arithmetic operations (ADD, SUBTRACT, MULTIPLY, DIVIDE, COMPUTE).
 * **ACCEPT**: Accept (receive) a value from SYSIN.
 * **ARRAYS**: Example of arrays (TABLE).
+* **EXAMIN**: Some usages of EXAMINE (similar to INSPECT in z/OS COBOL).
 * **READSEQ**: Example of use of READ and DISPLAY with a Sequential file.
 * **REWRTSEQ**: Example of use REWRITE to change a record on a Sequential file.
 * **CALLSUB1**: Example of calling by REFERENCE a COBOL subroutine.
