@@ -1,0 +1,21 @@
+//INITDASD  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* *************************************************                   00000300
+//*  INITIALISE A DASD                                                  00000400
+//*                                                                     00000500
+//*    1) DASD MUST BE ATTACHED TO HERCULES, BUT OFFLINE                00000600
+//*    2) CHANGE VALUES OF INIT TO YOUR NEEDS                           00000700
+//*    3) VTOC VALUES VTOC(X,Y,Z)                                       00000800
+//*         X = IN WHICH CYLINDER VTOC WILL BE ALLOCATED                00000900
+//*         Y = IN WHICH TRACK                                          00001000
+//*         Z = HOW MANY TRACKS (VTOC ZISE)                             00001100
+//*    4) REPLY FOR THE WTOR: /R 00,U                                   00001200
+//* *************************************************                   00001300
+//*                                                                     00001400
+//INIDASD EXEC PGM=ICKDSF                                               00001500
+//SYSPRINT  DD SYSOUT=*                                                 00001600
+//SYSIN     DD *                                                        00001700
+  INIT UNITADDRESS(244) NOVERIFY VOLID(HASP01) -                        00001800
+       OWNERID(HERCULES) VTOC(0,1,1)                                    00001900
+/*                                                                      00002000
+//                                                                      00002100
