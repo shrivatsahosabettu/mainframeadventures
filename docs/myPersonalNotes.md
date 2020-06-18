@@ -4,54 +4,229 @@ This a collection of notes I'm gathering meanwhile I learn, and I need to re-vis
 
 ---
 
-# Shutting down
+## System Start (IPL)
 
-## Automated
+### Automatic IPL
 
- At READY prompt:
-  * Type *SHUTDOWN* and press ENTER.
-  * Type *LOGOFF* and press ENTER.
-  
-The automated shutdown procedure will bring the system down and quit Hercules (which is equivalent to powering off the mainframe).
+> ./mvs
 
-## Manual
+### Manual IPL
 
-From the Hercules console, the system can be stopped manually too, following the nest steps:
+> hercules -f conf/tk4-.cnf
 
-* */F BSPPILOT,SHUTNOW*
-* Wait for message *+BSPPILOT - Shutdown sequence terminated*
-* */$PJES2*
-* */Z EOD*
-* /QUIESCE
-* QUIT
+in the operator console, type
 
-## JES2 is not going down
+> ipl 148
 
-If during the Automated Shutting down the system seems to not do anything, type */$PJES2* in the Hercules console.
+and reply with
 
-If after this, or after typing it during the Manual Shutting down this message appears *$HASP000 JES2 NOT DORMANT -- SYSTEM NOW DRAINING*. Follow next steps:
+> /r 00,cmd=xx
 
-* */$DU*
-* Find out which device is still in *DRAINING* status.
-* Try to close it with */$C device_name* (e.g. /$C PRINTER1)
-* and try again */$PJES2*
+to the message *IEA101A SPECIFY SYSTEM PARAMETERS FOR RELEASE 03.8 .VS2*
 
-If this fails:
-* */$PJES2,ABEND*
-* A message will appear: *$HASP098 ENTER TERMINATION OPTION*
-* Reply with *PURGE* (e.g. */R 01,PURGE*)
+where *xx* is one of the following values:
+
+|value|description|
+|-----|:----------|
+|00|Normal IPL. Everything started|
+|01|???|
+|02|minimal system. No start for MF1, JRP, SNASOL|
+|03|all steps must be done manually|
 
 ---
 
-# System Administration
+## Default Users/Passwords
 
-## Remove Session Time out
+|Username|Password|Details|
+|:--------|:--------|:---------|
+|HERC01|CUL8TR|Fully authorized user|
+|HERC02|CUL8TR|Fully authorized user|
+|HERC03|PASS4U|Regular user|
+|HERC04|PASS4U|Regular user|
+|IBMUSER|IBMPASS|Fully authorized user without access to the RAKF users and profiles tables. This account is meant to be used for recovery  purposes only.|
+
+## Shutting down
+
+### Automated
+
+ At READY prompt:
+
+> * SHUTDOWN
+> * LOGOFF
+  
+The automated shutdown procedure will bring the system down and quit Hercules (which is equivalent to powering off the mainframe).
+
+### Manual
+
+From the Hercules console, the system can be stopped manually too, following the nest steps:
+
+> /F BSPPILOT,SHUTNOW
+
+Wait for message *+BSPPILOT - Shutdown sequence terminated*
+
+> * /$PJES2
+> * /Z EOD
+> * /QUIESCE
+> * QUIT
+
+### JES2 is not going down
+
+If during the Automated Shutting down the system seems to not do anything, type in the Hercules console:
+
+> /$PJES2
+
+If after this, or after typing it during the Manual Shutting down this message appears *$HASP000 JES2 NOT DORMANT -- SYSTEM NOW DRAINING*. Follow next steps:
+
+> /$DU
+
+Find out which device is still in *DRAINING* status.
+
+Try to close it
+
+> /$C device_name
+
+and try again
+
+> /$PJES2
+
+If this fails:
+
+> /$PJES2,ABEND
+
+ A message will appear: *$HASP098 ENTER TERMINATION OPTION*
+
+Reply with
+
+> /R 01,PURGE
+
+---
+
+## Tape Backups
+
+### Backup/Restore a PDS
+
+#### Backup PDS to tape
+
+Create tape in Linux:
+
+> hetinit TAPE01.het HERC01
+
+SUBmit:
+
+```jcl
+//TAPETO JOB (01),'COPY TO TAPE',CLASS=A,MSGCLASS=H
+//COPY   EXEC PGM=IEBCOPY,REGION=720K
+//SYSPRINT DD SYSOUT=*
+//PDS      DD DSN=SYS2.JCLLIB,DISP=SHR
+//TAPE     DD UNIT=TAPE,DISP=NEW,DSN=SYS2.JCLLIB,
+//            VOL=SER=TAPE01,LABEL=(,SL)
+//SYSUT3   DD UNIT=SYSDA,SPACE=(80,(60,45)),DISP=(NEW,DELETE)
+//SYSIN    DD *
+  COPY INDD=PDS,OUTDD=TAPE
+/*
+//
+```
+
+In Hercules console will appear a message *\*IEF233A M 480,TAPE01,,HERC01F,COPY*, reply with
+
+> devinit 480 tapes/TAPE01.aws
+
+#### Restore PDS from tape
+
+Create destination PDS in MVS at 3.2 with same configuration as original
+
+SUBmit:
+
+```jcl
+//TAPEFROM JOB (01),'RESTORE FROM TAPE',CLASS=A,MSGCLASS=H
+//COPY    EXEC PGM=IEBCOPY,REGION=720K
+//SYSPRINT  DD SYSOUT=*
+//PDS       DD DSN=HERC01.TAPE.JCLLIB,DISP=SHR
+//TAPE      DD UNIT=TAPE,DISP=NEW,DSN=SYS2.JCLLIB,
+//             VOL=SER=TAPE01,LABEL=(,SL)
+//SYSUT3    DD UNIT=SYSDA,SPACE=(80,(60,45)),DISP=(NEW,DELETE)
+//SYSIN     DD *
+  COPY INDD=TAPE,OUTDD=PDS
+/*
+//
+```
+
+In Hercules console will appear a message *\*IEF233A M 480,TAPE01,,HERC01F,COPY*, reply with
+
+>devinit 480 tapes/TAPE01.het
+
+### Backup/Restore an entire VOLUME
+
+#### Backup VOLUME to tape
+
+Create tape in Linux:
+
+>hetinit TAPE01.het TAPE01 HERC01
+
+Load tape in Hercules console
+
+> devinit 0480 tapes/TAPE01.het
+
+SUBmit:
+
+```jcl
+//VOL2TAPE JOB CLASS=A,MSGLEVEL=(1,1),MSGCLASS=A
+//IEHDASDR EXEC PGM=IEHDASDR,REGION=4096K
+//SYSPRINT DD  SYSOUT=A
+//DASD     DD  UNIT=3350,VOL=SER=MVSRES,DISP=OLD
+//TAPE     DD DSN=DASTA.DUMP,UNIT=TAPE,DISP=(,KEEP),
+//         VOL=SER=200604,DCB=(LRECL=0,BLKSIZE=32480,RECFM=U)
+//SYSIN    DD  *
+  DUMP FROMDD=DASD,TODD=TAPE
+/*
+//
+```
+
+### Restore VOLUME from tape
+
+Load tape in Hercules console:
+
+> devinit 0480 tapes/TAPE01.het
+
+SUBmit:
+
+```jcl
+//TAPE2VOL JOB CLASS=A,MSGLEVEL=(1,1),MSGCLASS=A
+//IEHDASDR EXEC PGM=IEHDASDR,REGION=4096K
+//SYSPRINT DD  SYSOUT=A
+//DASD     DD  UNIT=3350,VOL=SER=WORK00,DISP=OLD
+//TAPE     DD DSN=DASTA.DUMP,UNIT=TAPE,DISP=(,KEEP),
+//         VOL=SER=200604,DCB=(LRECL=0,BLKSIZE=32480,RECFM=U)
+//SYSIN    DD  *
+  RESTORE FROMDD=TAPE,TODD=DASD
+/*
+//
+```
+
+---
+
+## KICKS
+
+At READY prompt:
+
+* Start: *EXEC KICKSSYS.V1R5M0.CLIST(KICKS)*
+* Start easier:
+  * Copy *HERC01.KICKSSYS.V1R5M0.CLIST(KICKS)* to *SYS1.CMDPROC(KICKS)*
+  * then you can start by just typing *KICKS*
+* Stop: *KSSF*
+
+---
+
+## System Administration
+
+### Remove Session Time out
 
 * Edit SYS1.PROCLIB(TSOLOGON)
 * Add *TIME=14440* to the line *//IKJACCNT EXEC PGM=IKJEFT01,PARM=USRLOGON,DYNAMNBR=64*
 
-## IMON as Operator Console
-Not need for **hercules/unattended/set_console_mode**.
+### IMON as Operator Console
+
+Not need for *hercules/unattended/set_console_mode*.
 
 * Go to *3 IM*
 * Go to *O - OS CONSOLE*
@@ -59,89 +234,151 @@ Not need for **hercules/unattended/set_console_mode**.
 * Press *T*
 * Press *R* to freeze/unfreeze updates in the field *\*\<R\>*
 
-## Clear log files
+### Clear log files
 
-### ERP (Error Recovery Program) 
+#### ERP (Error Recovery Program)
 
-* */s clearerp*
+> /s clearerp
 
-### SMF (System Management Facility)
-* */s clearsmf,man=x*
-* */s clearsmf,man=y*
+#### SMF (System Management Facility)
+
+> * /s clearsmf,man=x
+> * /s clearsmf,man=y
 
 If any gives an error *IFA006A*, need to switch (*/switch smf*), clean and switch again:
 
-## Increase JES2 spool space
-* Check current percent spool utilization: */$dn*
+### Increase JES2 spool space
+
+* Check current percent spool utilization:
+
+>      /$dn
+
 * Create a DASD
-  * Check which addresses are available (OFFLINE): */d u,dasd,,240,8*
-  * *dasdinit -z -a HASP01.244 3350 HASP01*
-* Attach new DASD to Hercules: *attach 244 3350 dasd/hasp01.244*
+  * Check which addresses are available (OFFLINE):
+
+>           /d u,dasd,,240,8
+
+>           dasdinit -z -a HASP01.244 3350 HASP01
+
+* Attach new DASD to Hercules:
+
+>      attach 244 3350 dasd/hasp01.244
+
 * Initialise DASD by SUBmitting corresponding JCL (e.g. [HER01.TOOLBOX(INITDASD)](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/src/VOL2TAPE))
-* Put ONLINE the new DASD: */vary 244,online*
-* Mount the new DASD: */mount 244,vol=(sl,hasp01),use=private*
+* Put ONLINE the new DASD:
+
+>      /vary 244,online
+
+* Mount the new DASD:
+
+>      /mount 244,vol=(sl,hasp01),use=private
+
 * Allocate dataset, by SUBmitting:
+
+```jcl
+//ALLOCDS   JOB ,'ALLOCATE DATASET',CLASS=A,MSGCLASS=H
+//STEP1   EXEC PGM=IEFBR14
+//HASP01    DD DISP=(NEW,KEEP),
+//             DSN=SYS1.HASPACE,
+//             UNIT=3350,VOL=SER=HASP01,
+//             SPACE=(ABSTR,(16605,41))
+//
 ```
-							//ALLOCDS   JOB ,'ALLOCATE DATASET',CLASS=A,MSGCLASS=H
-							//STEP1   EXEC PGM=IEFBR14
-							//HASP01    DD DISP=(NEW,KEEP),
-							//             DSN=SYS1.HASPACE,
-							//             UNIT=3350,VOL=SER=HASP01,
-							//             SPACE=(ABSTR,(16605,41))
-							//
-```
+
 * Make DASD visible at IPL:
-  * Add to *SYS1.PARMLIB(VATLST00)*: 
-			*HASP01,1,2,3350    ,N                  MVS 3.8 JES Spool Disk 2*
+  * Add to *SYS1.PARMLIB(VATLST00)*:
+
+>           HASP01,1,2,3350    ,N                  MVS 3.8 JES Spool Disk 2
+
 * Shutdown
 * Add line to *conf/tk4-.cnf*: *0244 3350 dasd/hasp01.244*
-* IPL and re-check current percent spool utilization: */$dn*
+* IPL and re-check current percent spool utilization:
 
-## Remove BSPFCOOK (The Fortune Cookie Program)
+>     /$dn
+
+### Repair JES2 after $HASP050 JES RESOURCE SHORTAGE
+
+Whenever JES2 spool utilisation is approaching 100%, that message will appear in the console. If you allow JES2 to go 100%, your system will halt and you won’t be able to IPL normally.
+
+* IPL with */R 00,CMD=03*
+
+* Start JES2
+
+>      /S JES2
+
+* Reply with
+
+>      /R 00,FORMAT
+
+When finished, shutdown system and re-IPL.
+
+### Remove BSPFCOOK (The Fortune Cookie Program)
 
 Edit SYS1.CMDPROC(USRLOGON) and leave it like this:
 
-```
-000001         PROC 0                                                  
-000002 CONTROL NOMSG,NOLIST,NOSYMLIST,NOCONLIST,NOFLUSH                
-000003 FREE FILE(SYSHELP)                                              
-000004 ALLOC FILE(SYSHELP) DSN('SYS1.HELP','SYS2.HELP') SHR            
-000005 ALLOC FILE(X1) DSN('&SYSUID..CMDPROC(STDLOGON)') SHR            
-000006 IF &LASTCC = 0 THEN +                                           
-000007    DO                                                           
-000008       FREE FILE(SYSPROC)                                        
-000009       FREE FILE(X1)                                             
-000010       ALLOC FILE(SYSPROC) +                                     
+```txt
+000001         PROC 0
+000002 CONTROL NOMSG,NOLIST,NOSYMLIST,NOCONLIST,NOFLUSH
+000003 FREE FILE(SYSHELP)
+000004 ALLOC FILE(SYSHELP) DSN('SYS1.HELP','SYS2.HELP') SHR
+000005 ALLOC FILE(X1) DSN('&SYSUID..CMDPROC(STDLOGON)') SHR
+000006 IF &LASTCC = 0 THEN +
+000007    DO
+000008       FREE FILE(SYSPROC)
+000009       FREE FILE(X1)
+000010       ALLOC FILE(SYSPROC) +
 000011        DSN('&SYSUID..CMDPROC','SYS1.CMDPROC','SYS2.CMDPROC') SHR
-000012    END                                                          
-000013 ELSE +                                                          
-000014    DO                                                           
-000015       FREE FILE(X1)                                             
-000016    END                                                          
-000017 %STDLOGON                                                       
-000018 %REVINIT                                                        
-000019 TERMTYPE                                                        
-000020 SET SZ = &LASTCC                                                
-000021 IF &SZ NE 0 THEN -                                              
-000022   DO                         
-000023     WRITENR ***              
-000024     READ BLABLA              
-000025     CLS                      
-000026     TSOAPPLS                 
-000027   END                        
-000028 ELSE -                       
-000029   DO                         
-000030     TERMINAL LINESIZE(100)   
-000031     %TTYINTRO                
-000032   END                        
+000012    END
+000013 ELSE +
+000014    DO
+000015       FREE FILE(X1)
+000016    END
+000017 %STDLOGON
+000018 %REVINIT
+000019 TERMTYPE
+000020 SET SZ = &LASTCC
+000021 IF &SZ NE 0 THEN -
+000022   DO
+000023     WRITENR ***
+000024     READ BLABLA
+000025     CLS
+000026     TSOAPPLS
+000027   END
+000028 ELSE -
+000029   DO
+000030     TERMINAL LINESIZE(100)
+000031     %TTYINTRO
+000032   END
 000033 EXIT
 ```
 
+### Services
+
+#### MF/1
+
+* Start: */S MF1*
+* Stop: ???
+
+#### FTP Server
+
+* Start: */start ftpd,srvport=<port_num>
+* Stop: */stop ftpd*
+
+#### HTTP Server
+
+* Start: *http start*
+* Stop: *http stop*
+
+Must have in conf/tk4-.conf:
+
+* *HTTP PORT ${HTTPPORT:=8038}*
+* *HTTP ROOT hercules/httproot*
+
 ---
 
-# Technical
+## Technical
 
-## DASD architecture
+### DASD architecture
 
 * [2314](https://www.ibm.com/ibm/history/exhibits/storage/storage_2314.html)
 * [3330](https://www.ibm.com/ibm/history/exhibits/storage/storage_3330.html)
@@ -155,3 +392,11 @@ Edit SYS1.CMDPROC(USRLOGON) and leave it like this:
 * [3375](https://www.ibm.com/ibm/history/exhibits/storage/storage_3370.html)
 * [3380](https://www.ibm.com/ibm/history/exhibits/storage/storage_3380.html)
 * [3390](https://www.ibm.com/ibm/history/exhibits/storage/storage_3390.html)
+
+### Printers
+
+|device number|file|SYSOUT|
+|:-------------:|:---:|:------:|
+|000E|prt00e.txt|A|
+|0002|prt002.txt|X|
+|000F|prt00f.txt|Z|
