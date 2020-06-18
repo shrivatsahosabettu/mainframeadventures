@@ -1,0 +1,21 @@
+//PRNLOGRE  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* *************************************************                   00000300
+//*  PRINT INFORMATION RECORDED IN SYS1.LOGREC                          00000400
+//*                                                                     00000500
+//*  http://www.jaymoseley.com/hercules/faq/mvsfaq03.htm#SYSTEM008      00000600
+//* *************************************************                   00000700
+//*                                                                     00000800
+//IFCEREP1 EXEC PGM=IFCEREP1,REGION=1024K,PARM='CARD'                   00000900
+//SERLOG   DD  DSN=SYS1.LOGREC,DISP=OLD                                 00001000
+//ACCDEV   DD  DUMMY                                                    00001100
+//TOURIST  DD  SYSOUT=A                                                 00001200
+//EREPPT   DD  SYSOUT=A                                                 00001300
+//SYSIN    DD  *                                                        00001400
+  LINECT=060                                                            00001500
+  TABSIZE=512K                                                          00001600
+  PRINT=AL                                                              00001700
+  HIST=N                                                                00001800
+  ZERO=N                                                                00001900
+  ACC=N                                                                 00002000
+//                                                                      00002100
