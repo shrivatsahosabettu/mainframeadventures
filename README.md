@@ -2,7 +2,9 @@
 
 This are just some examples I'm putting together meanwhile I re-learn COBOL.
 
-I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 in OS/390 and AS/400
+I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 in OS/390 and AS/400.
+
+More to come... *soon*
 
 ## OS/VS COBOL V1R2M4 (Prod# 5740-CB1) for MVS 3.8
 
@@ -17,6 +19,7 @@ I'm by no means an expert on COBOL or mainframes, so use it with caution. My exp
 * **CALLSUB1**: Example of calling by REFERENCE a COBOL subroutine.
 * **CALLSUB3**: Subroutine to be called (cannot be executed independently).
 * **STRUSTR**: This COBOL does not have STRING/UNSTRING. Here is how to do it instead.
+* **DAYOWEEK**: Calculate which day of the week, using [Zeller's congruence algorithm](https://en.wikipedia.org/wiki/Zeller%27s_congruence).
 
 ## IBM Enterprise COBOL for zOS
 
@@ -38,11 +41,9 @@ I'm by no means an expert on COBOL or mainframes, so use it with caution. My exp
 
 ## MVS 3.8j TOOLBOX
 
-Useful JCLs for MVS 3.8j
+Useful (at least to me) JCLs for MVS 3.8j
 
 ---
-
-More to come... *soon*
 
 Many thanks to the folks at [https://groups.io/g/H390-MVS](https://groups.io/g/H390-MVS) that helped me to finish READSEQ for MVS 3.8
 

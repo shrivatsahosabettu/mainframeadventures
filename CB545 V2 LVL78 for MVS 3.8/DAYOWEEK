@@ -1,0 +1,110 @@
+//ACCEPT01 JOB (COBOL),                                                 00000100
+//             'CALC DAY OF THE WEEK',                                  00000200
+//             CLASS=A,MSGCLASS=H,                                      00000300
+//             MSGLEVEL=(1,1)                                           00000400
+//COMPCOB  EXEC COBUCG,                                                 00000500
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            00000600
+//COB.SYSPUNCH DD DUMMY                                                 00000700
+//COB.SYSIN    DD *                                                     00000800
+       IDENTIFICATION DIVISION.                                         00000900
+       PROGRAM-ID. ACCEPT01.                                            00001000
+      ******************************************************************00001100
+       ENVIRONMENT DIVISION.                                            00001200
+      ******************************************************************00001300
+       DATA DIVISION.                                                   00001400
+      ******************************************************************00001500
+       WORKING-STORAGE SECTION.                                         00001600
+      **********************************                                00001700
+           01 WS-ACCEPT.                                                00001800
+              05 WS-ACPT-DD      PIC 9(02).                             00001900
+              05 WS-ACPT-MM      PIC 9(02).                             00002000
+              05 WS-ACPT-CC      PIC 9(02).                             00002100
+              05 WS-ACPT-YY      PIC 9(02).                             00002200
+           01 WS-ZELLER-FORMULA.                                        00002300
+              05 WS-PART1        PIC 9(03).                             00002400
+              05 WS-PART2        PIC 9(02).                             00002500
+              05 WS-PART3        PIC 9(02).                             00002600
+              05 WS-PART4        PIC 9(02).                             00002700
+              05 WS-PART5        PIC 9(03).                             00002800
+              05 WS-DOW          PIC 9.                                 00002900
+      ******************************************************************00003000
+       PROCEDURE DIVISION.                                              00003100
+      ******************************************************************00003200
+       0000-MAIN.                                                       00003300
+      *                                                                 00003400
+      * Calculate the day of the week for any date, using Zeller''s Rule00003500
+      *                                                                 00003600
+      * Formula: d + ((13 * m - 1) / 5) + y + (y / 4) + (c / 4) - 2 * c 00003700
+      *   Where:                                                        00003800
+      *          d is the day of the month                              00003900
+      *          m is the month number, but starting with March=1       00004000
+      *          c is the first two digits of the year                  00004100
+      *          y is the last two digits of the year                   00004200
+      *                                                                 00004300
+      *   I have broken it up in parts for easy understanding:          00004400
+      *     WS-PART1 = (13 * m - 1) / 5)                                00004500
+      *     WS-PART2 = (y / 4)                                          00004600
+      *     WS-PART3 = (c / 4)                                          00004700
+      *     WS-PART4 = 2 + c                                            00004800
+      *     WS-PART5 = d + WS-PART1 + y + WS-PART2 + WS-PART3 - WS-PART400004900
+      *     WS-DOW   = WS-PART5 mod 7                                   00005000
+      *                                                                 00005100
+      * Limitations:                                                    00005200
+      *    Only works for Gregorian calendar (i.e. after 14th Sept 1752)00005300
+      **********************************                                00005400
+           ACCEPT WS-ACCEPT.                                            00005500
+      * In Zeller''rule, months do not start on January but March       00005600
+           IF WS-ACPT-MM IS GREATER THAN 2 THEN                         00005700
+               SUBTRACT 2 FROM WS-ACPT-MM                               00005800
+           ELSE                                                         00005900
+               ADD 10 TO WS-ACPT-MM.                                    00006000
+      * In Zeller''rule, year must be decreased by 1 when               00006100
+      *   using January or February                                     00006200
+           IF WS-ACPT-MM EQUAL 11 OR WS-ACPT-MM EQUAL 12 THEN           00006300
+               SUBTRACT 1 FROM WS-ACPT-YY.                              00006400
+      * Perform Zeller''s calculation                                   00006500
+      *  WS-PART1 = (13 * m - 1) / 5                                    00006600
+           COMPUTE WS-PART1 = 13 * WS-ACPT-MM - 1.                      00006700
+           DIVIDE WS-PART1 BY 5 GIVING WS-PART1.                        00006800
+      *  WS-PART2 = (y / 4)                                             00006900
+           DIVIDE WS-ACPT-YY BY 4 GIVING WS-PART2.                      00007000
+      *  WS-PART3 = (c / 4)                                             00007100
+           DIVIDE WS-ACPT-CC BY 4 GIVING WS-PART3.                      00007200
+      *  WS-PART4 = 2 * c                                               00007300
+           MULTIPLY 2 BY WS-ACPT-CC GIVING WS-PART4.                    00007400
+      *  WS-PART5 = d + WS-PART1 + y + WS-PART2 + WS-PART3 - WS-PART4   00007500
+           COMPUTE WS-PART5 = WS-ACPT-DD + WS-PART1 + WS-ACPT-YY.       00007600
+           COMPUTE WS-PART5 = WS-PART5 + WS-PART2.                      00007700
+           COMPUTE WS-PART5 = WS-PART5 + WS-PART3 - WS-PART4            00007800
+      *  WS-DOW   = WS-PART5 mod 7                                      00007900
+           DIVIDE WS-PART5 BY 7 GIVING WS-PART5 REMAINDER WS-DOW.       00008000
+      **********************************                                00008100
+           IF WS-DOW = 1 THEN                                           00008200
+               DISPLAY 'IS MONDAY'                                      00008300
+               GO TO 0000-EXIT.                                         00008400
+           IF WS-DOW = 2 THEN                                           00008500
+               DISPLAY 'IS TUESDAY'                                     00008600
+               GO TO 0000-EXIT.                                         00008700
+           IF WS-DOW = 3 THEN                                           00008800
+               DISPLAY 'IS WEDNESDAY'                                   00008900
+               GO TO 0000-EXIT.                                         00009000
+           IF WS-DOW = 4 THEN                                           00009100
+               DISPLAY 'IS THURSDAY'                                    00009200
+               GO TO 0000-EXIT.                                         00009300
+           IF WS-DOW = 5 THEN                                           00009400
+               DISPLAY 'IS FRIDAY'                                      00009500
+               GO TO 0000-EXIT.                                         00009600
+           IF WS-DOW = 6 THEN                                           00009700
+               DISPLAY 'IS SATURDAY'                                    00009800
+               GO TO 0000-EXIT.                                         00009900
+           IF WS-DOW = 7 THEN                                           00010000
+               DISPLAY 'IS SUNDAY'.                                     00010100
+      **********************************                                00010200
+       0000-EXIT.                                                       00010300
+           STOP RUN.                                                    00010400
+/*                                                                      00010500
+//GO.SYSOUT   DD SYSOUT=*                                               00010600
+//GO.SYSIN    DD *                                                      00010700
+23062020                                                                00010800
+/*                                                                      00010900
+//                                                                      00011000

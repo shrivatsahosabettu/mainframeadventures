@@ -224,6 +224,14 @@ At READY prompt:
 * Edit SYS1.PROCLIB(TSOLOGON)
 * Add *TIME=14440* to the line *//IKJACCNT EXEC PGM=IKJEFT01,PARM=USRLOGON,DYNAMNBR=64*
 
+### Enable 3270 Console
+
+> /attach 010 3270 CONS
+
+Connect a 3270 emulator. Use *CONS* for the *LU Name*.
+
+>/v 010,console,auth=all
+
 ### IMON as Operator Console
 
 Not need for *hercules/unattended/set_console_mode*.
@@ -361,7 +369,7 @@ Edit SYS1.CMDPROC(USRLOGON) and leave it like this:
 
 #### FTP Server
 
-* Start: */start ftpd,srvport=<port_num>
+* Start: */start ftpd,srvport=<port_num>*
 * Stop: */stop ftpd*
 
 #### HTTP Server
