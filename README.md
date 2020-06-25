@@ -12,7 +12,7 @@ More to come... *soon*
 * **CONDITIO**: Example of use of conditional statements (IF/ELSE, IF NOT, SIGN, CLASS, CONDITION-NAME, AND).
 * **ARITHMET**: Example of arithmetic operations (ADD, SUBTRACT, MULTIPLY, DIVIDE, COMPUTE).
 * **ACCEPT**: Accept (receive) a value from SYSIN.
-* **ARRAYS**: Example of arrays (TABLE).
+* **TABLES**: Examples of tables (arrays).
 * **EXAMIN**: Some usages of EXAMINE (similar to INSPECT in z/OS COBOL).
 * **READSEQ**: Example of use of READ and DISPLAY with a Sequential file.
 * **REWRTSEQ**: Example of use REWRITE to change a record on a Sequential file.
@@ -21,7 +21,13 @@ More to come... *soon*
 * **STRUSTR**: This COBOL does not have STRING/UNSTRING. Here is how to do it instead.
 * **DAYOWEEK**: Calculate which day of the week, using [Zeller's congruence algorithm](https://en.wikipedia.org/wiki/Zeller%27s_congruence).
 
+## MVS 3.8j TOOLBOX
+
+Useful (at least to me) JCLs for MVS 3.8j
+
 ## IBM Enterprise COBOL for zOS
+
+I had a brief access to an IBM Z mainframe, but now it's gone so do not expect much more to come here.
 
 * **TEMPLATE**: Template with (almost) all DIVISION and SECTION.
 * **CONDITIO**: Example of use of conditional statements (IF/ELSE, IF NOT, SIGN, CLASS, CONDITION-NAME, EVALUATE, AND/OR).
@@ -38,10 +44,6 @@ More to come... *soon*
 * **CALLSUB3**: Subroutine to be called (cannot be executed independently).
 * **SUBMIJCL**: Submit a JCL via Internal Reader (INTRDR).
 * **$EXECSUB**: JCL to execute SUBMIJCL.
-
-## MVS 3.8j TOOLBOX
-
-Useful (at least to me) JCLs for MVS 3.8j
 
 ---
 

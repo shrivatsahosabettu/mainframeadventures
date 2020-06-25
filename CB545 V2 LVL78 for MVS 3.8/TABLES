@@ -1,0 +1,103 @@
+//TABLES01 JOB (COBOL),                                                 00000100
+//             'COBOL TABLES',                                          00000200
+//             CLASS=A,                                                 00000300
+//             MSGCLASS=H,                                              00000400
+//             REGION=8M,TIME=1440,                                     00000500
+//             MSGLEVEL=(1,1)                                           00000600
+//TABLES   EXEC COBUCG,                                                 00000700
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            00000800
+//COB.SYSPUNCH DD DUMMY                                                 00000900
+//COB.SYSIN    DD *                                                     00001000
+       IDENTIFICATION DIVISION.                                         00001100
+       PROGRAM-ID. TABLES.                                              00001200
+      ******************************************************************00001300
+       ENVIRONMENT DIVISION.                                            00001400
+      ******************************************************************00001500
+       DATA DIVISION.                                                   00001600
+      ******************************************************************00001700
+       WORKING-STORAGE SECTION.                                         00001800
+      **********************************                                00001900
+       01  SUBSCRIPTS.                                                  00002000
+           05 WS-MONTHS-SUB    PIC S99.                                 00002100
+           05 WS-STUDENTS-SUB  PIC S99.                                 00002200
+       01  COUNTERS.                                                    00002300
+           05 WS-I             PIC 9 VALUE 1.                           00002400
+      * One-level table with constant values                            00002500
+       01  WS-MONTH-TABLE-VALUES.                                       00002600
+           05 FILLER           PIC X(09) VALUE 'JANUARY  '.             00002700
+           05 FILLER           PIC X(09) VALUE 'FEBRUARY '.             00002800
+           05 FILLER           PIC X(09) VALUE 'MARCH    '.             00002900
+           05 FILLER           PIC X(09) VALUE 'APRIL    '.             00003000
+           05 FILLER           PIC X(09) VALUE 'MAY      '.             00003100
+           05 FILLER           PIC X(09) VALUE 'JUNE     '.             00003200
+           05 FILLER           PIC X(09) VALUE 'JULY     '.             00003300
+           05 FILLER           PIC X(09) VALUE 'AUGUST   '.             00003400
+           05 FILLER           PIC X(09) VALUE 'SEPTEMBER'.             00003500
+           05 FILLER           PIC X(09) VALUE 'OCTOBER  '.             00003600
+           05 FILLER           PIC X(09) VALUE 'NOVEMBER '.             00003700
+           05 FILLER           PIC X(09) VALUE 'DECEMBER '.             00003800
+       01  WS-MONTH-TABLE REDEFINES WS-MONTH-TABLE-VALUES.              00003900
+           05 WS-MONTH-NAME    PIC X(09) OCCURS 12 TIMES.               00004000
+       01  WS-MONTH            PIC X(09).                               00004100
+      * One-level table with variable values                            00004200
+       01  WS-SUDENTS-TABLE.                                            00004300
+           05 STU-DETAILS OCCURS 5 TIMES.                               00004400
+              10 STU-NUMBER    PIC 9.                                   00004500
+              10 STU-NAME      PIC X(10).                               00004600
+              10 STU-BIRTHDAY.                                          00004700
+                 15 STU-DOB-DD PIC 99.                                  00004800
+                 15 STU-DOB-MM PIC 99.                                  00004900
+                 15 STU-DOB-YY PIC 99.                                  00005000
+      * Two-levels table                                                00005100
+       01  WS-STUDENTS-MARKS.                                           00005200
+           05 MARKS-TABLE OCCURS 5 TIMES.                               00005300
+              10 STUDENT       PIC 9.                                   00005400
+              10 MARKS OCCURS 3 TIMES.                                  00005500
+                 15 MARK       PIC A.                                   00005600
+      ******************************************************************00005700
+       PROCEDURE DIVISION.                                              00005800
+      ******************************************************************00005900
+           DISPLAY '1ST MONTH: ' WS-MONTH-NAME (1).                     00006000
+           MOVE 3 TO WS-MONTHS-SUB                                      00006100
+           DISPLAY '3RD MONTH: ' WS-MONTH-NAME (WS-MONTHS-SUB).         00006200
+           DISPLAY '8TH MONTH: ' WS-MONTH-NAME (8).                     00006300
+      **********************************                                00006400
+           DISPLAY '************************'.                          00006500
+           MOVE WS-I         TO STU-NUMBER (WS-I).                      00006600
+           MOVE 'JOHN SMITH' TO STU-NAME (WS-I).                        00006700
+           MOVE 150578       TO STU-BIRTHDAY (WS-I).                    00006800
+           COMPUTE WS-I = WS-I + 1                                      00006900
+           MOVE WS-I         TO STU-NUMBER (WS-I).                      00007000
+           MOVE 'LEA BROWN ' TO STU-NAME (WS-I).                        00007100
+           MOVE 060988       TO STU-BIRTHDAY (WS-I).                    00007200
+           MOVE 1 TO WS-I                                               00007300
+           DISPLAY 'STUDENT:'                                           00007400
+           DISPLAY '     NAME: ' STU-NAME (WS-I).                       00007500
+           DISPLAY ' BIRTHDAY:'                                         00007600
+           DISPLAY '        DAY: ' STU-DOB-DD (WS-I).                   00007700
+           MOVE STU-DOB-MM (WS-I) TO WS-MONTHS-SUB.                     00007800
+           DISPLAY '      MONTH: ' WS-MONTH-NAME (WS-MONTHS-SUB).       00007900
+           DISPLAY '       YEAR: ' STU-DOB-YY (WS-I).                   00008000
+           COMPUTE WS-I = WS-I + 1                                      00008100
+           DISPLAY '     NAME: ' STU-NAME (WS-I).                       00008200
+           DISPLAY ' BIRTHDAY:'                                         00008300
+           DISPLAY '        DAY: ' STU-DOB-DD (WS-I).                   00008400
+           MOVE STU-DOB-MM (WS-I) TO WS-MONTHS-SUB.                     00008500
+           DISPLAY '      MONTH: ' WS-MONTH-NAME (WS-MONTHS-SUB).       00008600
+           DISPLAY '       YEAR: ' STU-DOB-YY (WS-I).                   00008700
+      **********************************                                00008800
+           DISPLAY '************************'.                          00008900
+           MOVE '1ABF2ADB' TO WS-STUDENTS-MARKS.                        00009000
+           DISPLAY 'STUDENT: ' STU-NAME (1).                            00009100
+           DISPLAY 'MARK1: ' MARKS (1, 1).                              00009200
+           DISPLAY 'MARK2: ' MARKS (1, 2).                              00009300
+           DISPLAY 'MARK3: ' MARKS (1, 3).                              00009400
+           DISPLAY 'STUDENT: ' STU-NAME (2).                            00009500
+           DISPLAY 'MARK1: ' MARKS (2, 1).                              00009600
+           DISPLAY 'MARK2: ' MARKS (2, 2).                              00009700
+           DISPLAY 'MARK3: ' MARKS (2, 3).                              00009800
+      **********************************                                00009900
+           STOP RUN.                                                    00010000
+/*                                                                      00010100
+//GO.SYSOUT   DD SYSOUT=*                                               00010200
+//                                                                      00010300
