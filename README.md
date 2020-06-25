@@ -2,7 +2,7 @@
 
 This are just some examples I'm putting together meanwhile I re-learn COBOL.
 
-I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 in OS/390 and AS/400.
+I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 on OS/390 and AS/400.
 
 More to come... *soon*
 
