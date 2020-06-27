@@ -14,12 +14,14 @@ More to come... *soon*
 * **ACCEPT**: Accept (receive) a value from SYSIN.
 * **TABLES**: Examples of tables (arrays).
 * **EXAMIN**: Some usages of EXAMINE (similar to INSPECT in z/OS COBOL).
-* **READSEQ**: Example of use of READ and DISPLAY with a Sequential file.
-* **REWRTSEQ**: Example of use REWRITE to change a record on a Sequential file.
 * **CALLSUB1**: Example of calling by REFERENCE a COBOL subroutine.
 * **CALLSUB3**: Subroutine to be called (cannot be executed independently).
 * **STRUSTR**: This COBOL does not have STRING/UNSTRING. Here is how to do it instead.
 * **DAYOWEEK**: Calculate which day of the week, using [Zeller's congruence algorithm](https://en.wikipedia.org/wiki/Zeller%27s_congruence).
+* **SEQAPPND**: Example of use of WRITE and DISP=MOD to append to a Sequential file.
+* **SEQREAD**: Example of use of READ and DISPLAY with a Sequential file.
+* **SEQREWRT**: Example of use REWRITE to change a record on a Sequential file.
+* **SEQWRITE**: Example of use WRITE and DISP=SHR to write (overwritting) records to a Sequential file.
 
 ## MVS 3.8j TOOLBOX
 

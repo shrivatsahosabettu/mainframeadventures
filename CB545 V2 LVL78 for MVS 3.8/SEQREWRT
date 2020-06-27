@@ -1,0 +1,93 @@
+//SEQREWRT JOB (COBOL),                                                 00000102
+//             'WRITE TO SEQUENTIAL',                                   00000200
+//             CLASS=A,                                                 00000300
+//             MSGCLASS=H,                                              00000400
+//             REGION=8M,TIME=1440,                                     00000500
+//             MSGLEVEL=(1,1)                                           00000600
+//DTYPES   EXEC COBUCG,                                                 00000700
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            00000800
+//COB.SYSPUNCH DD DUMMY                                                 00000900
+//COB.SYSIN    DD *                                                     00001000
+       IDENTIFICATION DIVISION.                                         00001100
+       PROGRAM-ID. SEQREWRT.                                            00001202
+      ******************************************************************00001300
+       ENVIRONMENT DIVISION.                                            00001400
+      ******************************************************************00001500
+       INPUT-OUTPUT SECTION.                                            00001600
+       FILE-CONTROL.                                                    00001700
+           SELECT IN-FILE ASSIGN TO DA-S-INFILE.                        00001800
+      ******************************************************************00001900
+       DATA DIVISION.                                                   00002000
+      ******************************************************************00002100
+       FILE SECTION.                                                    00002200
+       FD  IN-FILE                                                      00002300
+           RECORDING MODE F                                             00002400
+           LABEL RECORDS ARE STANDARD                                   00002500
+           BLOCK CONTAINS 0 RECORDS                                     00002600
+           RECORD CONTAINS 52 CHARACTERS.                               00002700
+       01  IN-RECORD.                                                   00002800
+           05 EMP-UID         PIC 9999.                                 00002900
+           05 EMP-NAME        PIC A(20).                                00003000
+           05 EMP-CITY        PIC A(10).                                00003100
+           05 EMP-COUNTRY     PIC A(10).                                00003200
+           05 EMP-DOB.                                                  00003300
+              10 EMP-DOB-YYYY PIC 9999.                                 00003400
+              10 EMP-DOB-MM   PIC 99.                                   00003500
+              10 EMP-DOB-DD   PIC 99.                                   00003600
+      **********************************                                00003700
+       WORKING-STORAGE SECTION.                                         00003800
+      **********************************                                00003900
+       77  END-OF-FILE        PIC X VALUE 'N'.                          00004000
+           88 EOF                   VALUE 'Y'.                          00004100
+       01  COUNTERS.                                                    00004200
+           05 REC-COUNTER     PIC 9(3) VALUE 0.                         00004300
+      ******************************************************************00004400
+       PROCEDURE DIVISION.                                              00004500
+      ******************************************************************00004600
+       000-MAIN.                                                        00004700
+           OPEN I-O IN-FILE.                                            00004800
+           PERFORM 100-READ-FILE THRU 199-READ                          00004900
+               UNTIL EOF.                                               00005000
+           DISPLAY 'TOTAL RECORDS: ' REC-COUNTER.                       00005100
+           CLOSE IN-FILE.                                               00005200
+           STOP RUN.                                                    00005300
+      **********************************                                00005400
+       100-READ-FILE.                                                   00005500
+      **********************************                                00005600
+           READ IN-FILE                                                 00005700
+               AT END MOVE 'Y' TO END-OF-FILE.                          00005800
+           IF NOT EOF THEN                                              00005900
+             PERFORM 300-DISPLAY-RECORD                                 00006000
+             ADD 1 TO REC-COUNTER.                                      00006100
+           IF EMP-UID = 0003                                            00006200
+             PERFORM 200-CHANGE-RECORD.                                 00006300
+       199-READ.                                                        00006400
+           EXIT.                                                        00006500
+      **********************************                                00006600
+       200-CHANGE-RECORD.                                               00006700
+      **********************************                                00006800
+           MOVE 'JANE DOE' TO EMP-NAME.                                 00006900
+           MOVE 'DUBLIN'   TO EMP-CITY.                                 00007000
+           MOVE 'IRELAND'  TO EMP-COUNTRY.                              00007100
+           MOVE 1969       TO EMP-DOB-YYYY.                             00007200
+           MOVE 3          TO EMP-DOB-MM.                               00007300
+           MOVE 27         TO EMP-DOB-DD.                               00007400
+           DISPLAY '**** RECORD CHANGED ****'                           00007500
+           PERFORM 300-DISPLAY-RECORD.                                  00007600
+           DISPLAY '************************'                           00007700
+           REWRITE IN-RECORD.                                           00007800
+      **********************************                                00007900
+       300-DISPLAY-RECORD.                                              00008000
+      **********************************                                00008100
+             DISPLAY 'NAME    : ' EMP-NAME.                             00008200
+             DISPLAY 'CITY    : ' EMP-CITY.                             00008300
+             DISPLAY 'COUNTRY : ' EMP-COUNTRY.                          00008400
+             DISPLAY 'BIRTHDAY  '.                                      00008500
+             DISPLAY '     DAY: ' EMP-DOB-DD.                           00008600
+             DISPLAY '   MONTH: ' EMP-DOB-MM.                           00008700
+             DISPLAY '    YEAR: ' EMP-DOB-YYYY.                         00008800
+             DISPLAY '************************'.                        00008900
+/*                                                                      00009000
+//GO.INFILE   DD DISP=SHR,DSN=DASTA.SEQ.EMPLOYEE                        00009101
+//GO.SYSOUT   DD SYSOUT=*                                               00009200
+//                                                                      00009300

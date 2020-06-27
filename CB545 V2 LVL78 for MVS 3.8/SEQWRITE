@@ -1,0 +1,64 @@
+//SEQWRITE JOB (COBOL),                                                 00000105
+//             'WRITE TO SEQUENTIAL',                                   00000200
+//             CLASS=A,                                                 00000300
+//             MSGCLASS=H,                                              00000400
+//             REGION=8M,TIME=1440,                                     00000500
+//             MSGLEVEL=(1,1)                                           00000600
+//DTYPES   EXEC COBUCG,                                                 00000700
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            00000800
+//COB.SYSPUNCH DD DUMMY                                                 00000900
+//COB.SYSIN    DD *                                                     00001000
+       IDENTIFICATION DIVISION.                                         00001100
+       PROGRAM-ID. SEQWRITE.                                            00001205
+      ******************************************************************00001300
+       ENVIRONMENT DIVISION.                                            00001400
+      ******************************************************************00001500
+       INPUT-OUTPUT SECTION.                                            00001600
+       FILE-CONTROL.                                                    00001700
+           SELECT OUT-FILE ASSIGN TO DA-S-OUTFILE.                      00001803
+      ******************************************************************00001900
+       DATA DIVISION.                                                   00002000
+      ******************************************************************00002100
+       FILE SECTION.                                                    00002200
+       FD  OUT-FILE                                                     00002300
+           RECORDING MODE F                                             00002400
+           LABEL RECORDS ARE STANDARD                                   00002500
+           BLOCK CONTAINS 0 RECORDS                                     00002600
+           RECORD CONTAINS 52 CHARACTERS.                               00002700
+       01  OUT-RECORD         PIC X(52).                                00002800
+      **********************************                                00002900
+       WORKING-STORAGE SECTION.                                         00003000
+      **********************************                                00003100
+       01  WS-EMPLOYEE.                                                 00003200
+           05 WS-UID          PIC 9999.                                 00003300
+           05 WS-NAME         PIC A(20).                                00003400
+           05 WS-CITY         PIC A(10).                                00003500
+           05 WS-COUNTRY      PIC A(10).                                00003600
+           05 WS-DOB.                                                   00003700
+              10 WS-DOB-YYYY  PIC 9999.                                 00003800
+              10 WS-DOB-MM    PIC 99.                                   00003900
+              10 WS-DOB-DD    PIC 99.                                   00004000
+      ******************************************************************00004100
+       PROCEDURE DIVISION.                                              00004200
+      ******************************************************************00004300
+       000-MAIN.                                                        00004400
+           OPEN OUTPUT OUT-FILE.                                        00004502
+           MOVE 1             TO WS-UID.                                00004600
+           MOVE 'WEI CHEN'    TO WS-NAME.                               00004700
+           MOVE 'BEIJING'     TO WS-CITY.                               00004800
+           MOVE 'CHINA'       TO WS-COUNTRY.                            00004900
+           MOVE 19480630      TO WS-DOB.                                00005000
+           WRITE OUT-RECORD FROM WS-EMPLOYEE.                           00005100
+           MOVE 2             TO WS-UID.                                00005200
+           MOVE 'PEDRO LOPEZ' TO WS-NAME.                               00005300
+           MOVE 'MALAGA'      TO WS-CITY.                               00005400
+           MOVE 'SPAIN'       TO WS-COUNTRY.                            00005500
+           MOVE 19881206      TO WS-DOB.                                00005600
+           WRITE OUT-RECORD FROM WS-EMPLOYEE.                           00005700
+           CLOSE OUT-FILE.                                              00005800
+      **********************************                                00005900
+           STOP RUN.                                                    00006000
+/*                                                                      00006100
+//GO.OUTFILE  DD DISP=SHR,DSN=DASTA.SEQ.EMPLOYE2                        00006204
+//GO.SYSOUT   DD SYSOUT=*                                               00006300
+//                                                                      00006400

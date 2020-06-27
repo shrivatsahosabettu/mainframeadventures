@@ -1,0 +1,74 @@
+//SEQREAD  JOB (COBOL),                                                 00000110
+//             'READ SEQUENTIAL',                                       00000200
+//             CLASS=A,                                                 00000300
+//             MSGCLASS=H,                                              00000400
+//             REGION=8M,TIME=1440,                                     00000500
+//             MSGLEVEL=(1,1)                                           00000600
+//COMPCOB  EXEC COBUCG,                                                 00000708
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            00000800
+//COB.SYSPUNCH DD DUMMY                                                 00000900
+//COB.SYSIN    DD *                                                     00001000
+      ******************************************************************00001108
+       IDENTIFICATION DIVISION.                                         00001200
+       PROGRAM-ID. SEQREAD.                                             00001310
+      ******************************************************************00001400
+       ENVIRONMENT DIVISION.                                            00001500
+      ******************************************************************00001600
+       INPUT-OUTPUT SECTION.                                            00001700
+       FILE-CONTROL.                                                    00001800
+           SELECT IN-FILE ASSIGN TO DA-S-INFILE.                        00001906
+      ******************************************************************00002000
+       DATA DIVISION.                                                   00002100
+      ******************************************************************00002200
+       FILE SECTION.                                                    00002300
+       FD  IN-FILE                                                      00002408
+           LABEL RECORDS ARE STANDARD                                   00002508
+           BLOCK CONTAINS 0 RECORDS                                     00002607
+           RECORD CONTAINS 52 CHARACTERS.                               00002707
+       01  IN-RECORD.                                                   00002808
+           05 EMP-UID         PIC 9(04).                                00002907
+           05 EMP-NAME        PIC A(20).                                00003007
+           05 EMP-CITY        PIC A(10).                                00003107
+           05 EMP-COUNTRY     PIC A(10).                                00003207
+           05 EMP-DOB.                                                  00003307
+              10 EMP-DOB-YYYY PIC 9(04).                                00003407
+              10 EMP-DOB-MM   PIC 9(02).                                00003507
+              10 EMP-DOB-DD   PIC 9(02).                                00003607
+      **********************************                                00003700
+       WORKING-STORAGE SECTION.                                         00003800
+      **********************************                                00003900
+       77  END-OF-FILE        PIC X       VALUE 'N'.                    00004008
+           88 EOF                         VALUE 'Y'.                    00004108
+       01  COUNTERS.                                                    00004208
+           05 REC-COUNTER     PIC 9(3)    VALUE ZERO.                   00004308
+      ******************************************************************00004400
+       PROCEDURE DIVISION.                                              00004500
+      ******************************************************************00004600
+       000-MAIN.                                                        00004700
+           OPEN INPUT IN-FILE.                                          00004807
+           PERFORM 100-READ-FILE THRU 199-READ                          00004907
+               UNTIL EOF.                                               00005008
+           DISPLAY 'TOTAL RECORDS: ' REC-COUNTER.                       00005108
+           CLOSE IN-FILE.                                               00005207
+           STOP RUN.                                                    00005300
+      **********************************                                00005400
+       100-READ-FILE.                                                   00005507
+      **********************************                                00005600
+           READ IN-FILE                                                 00005700
+               AT END MOVE 'Y' TO END-OF-FILE.                          00005808
+           IF NOT EOF THEN                                              00005908
+               DISPLAY 'NAME   : ' EMP-NAME                             00006007
+               DISPLAY 'CITY   : ' EMP-CITY                             00006107
+               DISPLAY 'COUNTRY: ' EMP-COUNTRY                          00006207
+               DISPLAY 'BIRTHDAY'                                       00006307
+               DISPLAY '    DAY: ' EMP-DOB-DD                           00006407
+               DISPLAY '  MONTH: ' EMP-DOB-MM                           00006507
+               DISPLAY '  YEAR : ' EMP-DOB-YYYY                         00006607
+               DISPLAY '**********************'                         00006707
+               ADD 1 TO REC-COUNTER.                                    00006808
+       199-READ.                                                        00006907
+           EXIT.                                                        00007007
+/*                                                                      00007100
+//GO.INFILE   DD DISP=SHR,DSN=DASTA.SEQ.EMPLOYEE                        00007207
+//GO.SYSOUT   DD SYSOUT=*                                               00007307
+//                                                                      00007400
