@@ -1,4 +1,4 @@
-//ACCEPT01 JOB (COBOL),                                                 00000100
+//DAYOWEEK JOB (COBOL),                                                 00000101
 //             'CALC DAY OF THE WEEK',                                  00000200
 //             CLASS=A,MSGCLASS=H,                                      00000300
 //             MSGLEVEL=(1,1)                                           00000400
@@ -21,12 +21,12 @@
               05 WS-ACPT-CC      PIC 9(02).                             00002100
               05 WS-ACPT-YY      PIC 9(02).                             00002200
            01 WS-ZELLER-FORMULA.                                        00002300
-              05 WS-PART1        PIC 9(03).                             00002400
-              05 WS-PART2        PIC 9(02).                             00002500
-              05 WS-PART3        PIC 9(02).                             00002600
-              05 WS-PART4        PIC 9(02).                             00002700
-              05 WS-PART5        PIC 9(03).                             00002800
-              05 WS-DOW          PIC 9.                                 00002900
+              05 WS-PART1        PIC 9(03) COMP.                        00002402
+              05 WS-PART2        PIC 9(02) COMP.                        00002502
+              05 WS-PART3        PIC 9(02) COMP.                        00002602
+              05 WS-PART4        PIC 9(02) COMP.                        00002702
+              05 WS-PART5        PIC 9(03) COMP.                        00002802
+              05 WS-DOW          PIC 9     COMP.                        00002902
       ******************************************************************00003000
        PROCEDURE DIVISION.                                              00003100
       ******************************************************************00003200
@@ -77,34 +77,37 @@
            COMPUTE WS-PART5 = WS-PART5 + WS-PART2.                      00007700
            COMPUTE WS-PART5 = WS-PART5 + WS-PART3 - WS-PART4            00007800
       *  WS-DOW   = WS-PART5 mod 7                                      00007900
-           DIVIDE WS-PART5 BY 7 GIVING WS-PART5 REMAINDER WS-DOW.       00008000
-      **********************************                                00008100
-           IF WS-DOW = 1 THEN                                           00008200
-               DISPLAY 'IS MONDAY'                                      00008300
-               GO TO 0000-EXIT.                                         00008400
-           IF WS-DOW = 2 THEN                                           00008500
-               DISPLAY 'IS TUESDAY'                                     00008600
+           DIVIDE WS-PART5 BY 7 GIVING WS-PART5 REMAINDER WS-DOW        00008002
+           IF WS-DOW = 0 THEN                                           00008102
+               MOVE 7 TO WS-DOW.                                        00008202
+      **********************************                                00008300
+           DISPLAY 'TODAY IS'.                                          00008402
+           IF WS-DOW = 1 THEN                                           00008500
+               DISPLAY 'MONDAY'                                         00008602
                GO TO 0000-EXIT.                                         00008700
-           IF WS-DOW = 3 THEN                                           00008800
-               DISPLAY 'IS WEDNESDAY'                                   00008900
+           IF WS-DOW = 2 THEN                                           00008800
+               DISPLAY 'TUESDAY'                                        00008902
                GO TO 0000-EXIT.                                         00009000
-           IF WS-DOW = 4 THEN                                           00009100
-               DISPLAY 'IS THURSDAY'                                    00009200
+           IF WS-DOW = 3 THEN                                           00009100
+               DISPLAY 'WEDNESDAY'                                      00009202
                GO TO 0000-EXIT.                                         00009300
-           IF WS-DOW = 5 THEN                                           00009400
-               DISPLAY 'IS FRIDAY'                                      00009500
+           IF WS-DOW = 4 THEN                                           00009400
+               DISPLAY 'THURSDAY'                                       00009502
                GO TO 0000-EXIT.                                         00009600
-           IF WS-DOW = 6 THEN                                           00009700
-               DISPLAY 'IS SATURDAY'                                    00009800
+           IF WS-DOW = 5 THEN                                           00009700
+               DISPLAY 'FRIDAY'                                         00009802
                GO TO 0000-EXIT.                                         00009900
-           IF WS-DOW = 7 THEN                                           00010000
-               DISPLAY 'IS SUNDAY'.                                     00010100
-      **********************************                                00010200
-       0000-EXIT.                                                       00010300
-           STOP RUN.                                                    00010400
-/*                                                                      00010500
-//GO.SYSOUT   DD SYSOUT=*                                               00010600
-//GO.SYSIN    DD *                                                      00010700
-23062020                                                                00010800
-/*                                                                      00010900
-//                                                                      00011000
+           IF WS-DOW = 6 THEN                                           00010000
+               DISPLAY 'SATURDAY'                                       00010102
+               GO TO 0000-EXIT.                                         00010200
+           IF WS-DOW = 7 THEN                                           00010300
+               DISPLAY 'SUNDAY'.                                        00010402
+      **********************************                                00010500
+       0000-EXIT.                                                       00010600
+           STOP RUN.                                                    00010700
+/*                                                                      00010800
+//GO.SYSOUT   DD SYSOUT=*                                               00010900
+//GO.SYSIN    DD *                                                      00011000
+05072020                                                                00011102
+/*                                                                      00011200
+//                                                                      00011300

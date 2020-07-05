@@ -53,7 +53,7 @@ where *xx* is one of the following values:
 
 > * SHUTDOWN
 > * LOGOFF
-  
+
 The automated shutdown procedure will bring the system down and quit Hercules (which is equivalent to powering off the mainframe).
 
 ### Manual
@@ -202,6 +202,38 @@ SUBmit:
 /*
 //
 ```
+---
+
+## JCL
+
+### The MSGLEVEL Parameter
+
+> MSGLEVEL=( [statements] [,messages] )
+
+* statements
+  * 0 = only the JOB statement is to be written.
+  * 1 = all input job control statements, cataloged procedure statements, and the internal
+representation of procedure statement parameters after symbolic parameter substitution
+are to be written.
+  * 2 = only input job control statements are to be written.
+* messages
+  * 0 = no allocation/ termination messages are to be written, unless the job terminates
+abnormally.
+  * 1 = allocation/ termination messages are to be written.
+
+---
+
+## COBOL
+
+### Level Number
+
+|Level|Description|
+|:-:|:-|
+|01|Record description entry|
+|02-49|Group and Elementary items
+|66|Rename Clause items|
+|77|Items which cannot be sub-divided|
+|88|Condition name entry|
 
 ---
 

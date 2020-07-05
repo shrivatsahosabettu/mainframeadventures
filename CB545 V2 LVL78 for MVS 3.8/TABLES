@@ -40,7 +40,7 @@
            05 WS-MONTH-NAME    PIC X(09) OCCURS 12 TIMES.               00004000
        01  WS-MONTH            PIC X(09).                               00004100
       * One-level table with variable values                            00004200
-       01  WS-SUDENTS-TABLE.                                            00004300
+       01  WS-STUDENTS-TABLE.                                           00004300
            05 STU-DETAILS OCCURS 5 TIMES.                               00004400
               10 STU-NUMBER    PIC 9.                                   00004500
               10 STU-NAME      PIC X(10).                               00004600
