@@ -29,6 +29,7 @@ Table of Contents
   * [Level Number](#level-number)
 * [KICKS](#kicks)
 * [System Administration](#system-administration)
+  * [OS/VS2 MVS Utilities](#osvs2-mvs-utilities)
   * [Remove Session Time out](#remove-session-time-out)
   * [Enable 3270 Console](#enable-3270-console)
   * [IMON as Operator Console](#imon-as-operator-console)
@@ -152,7 +153,7 @@ Reply with
 * **Sequential (PS)**: records are data items stored consecutively. Hence, to read a record, all previous records must be read. New records are added at the end.
 * **Partitioned (PDS)**: Often called libraries. Consist of a directory and members. The directory holds the address of each member. Each member consist of sequentially stored records. To reuse the space left by a deleted member, the library must be compressed manually.
 * **Partitioned Extended (PDSE)**: Space is reclaimed automatically when a member is deleted. Flexible size. Can be shared. Faster directory searches. Cannot no be used for PROCLIB or libraries that are part of the IPL.
-* **Virtual Storage Access Method (VSAM)**: http://www.jaymoseley.com/hercules/vs_tutor/vstutor.htm 
+* **Virtual Storage Access Method (VSAM)**: http://www.jaymoseley.com/hercules/vs_tutor/vstutor.htm
   * **Key Sequenced Data Set (KSDS)**: each record is identified for <u>access by specifying its key value</u>. Records may be accessed sequentially, in order by key value, or directly, by supplying the key value. KSDS datasets are similar to Indexed Sequential Access Method (ISAM). Records may be added or deleted at any point.
   * **Entry Sequence Data Set (ESDS)**: each record is identified for <u>access by specifying its physical location (Relative Byte Address [RBA])</u>.  Records may be accessed sequentially, in order by RBA value, or directly, by supplying the RBA of the desired record. ESDS datasets are similar to Basic Sequential Access Method (BSAM) or Queued Sequential Access Method (QSAM) datasets. Records cannot be deleted, and they can only be appended (added to the end of the dataset).
   * **Relative Record Data Set (RRDS)**: each record is identified for <u>access by specifying its record number</u>. Records may be accessed sequentially, in relative record number order, or directly, by supplying the relative record number of the desired record. RRDS datasets are similar to Basic Direct Access Method (BDAM) datasets. Records may be added into an empty record or deleted, leaving an empty record.
@@ -322,6 +323,33 @@ At READY prompt:
 ---
 
 ## System Administration
+
+### OS/VS2 MVS Utilities
+
+This utilities are explained in depth in GC26-3902-1
+
+* **System utilities**
+  * **IEHATLAS**: to assign alternate tracks and recover usable data records when defective tracks are indicated.
+  * **IEHDASDR**: to initialize and label direct access volumes, to assign alternate tracks when defective tracks are indicated, or to dump or restore data.
+  * **IEHINITT**: to write standard labels on tape volumes.
+  * **IEHLIST**: to list system control data.
+  * **IEHMOVE**: to move or copy collections of data.
+  * **IEHPROGM**: to build and maintain system control data.
+  * **IFHSTATR**: to select, format, and write information about tape errors from the IFASMFDP tape or the SYS1.MAN data set.
+* **Data Set utilities**
+  * **IEBCOMPR**: to compare records in sequential or partitioned data sets.
+  * **IEBCOPY**: to copy, compress, or merge partitioned data sets, to select or exclude specified members in a copy operation, and to rename and/or replace selected members of partitioned data sets.
+  * **IEBDG**: to create a test data set consisting of patterned data.
+  * **IEBEDIT**: to selectively copy job steps and their associated JOB statements.
+  * **IEBGENER**: to copy records from a sequential data set or to convert a data set from sequential organization to partitioned organization.
+  * **IEBISAM**: to place source data from an indexed sequential data set into a sequential data set in a format suitable for subsequent reconstruction.
+  * **IEBPTPCH**: to print or punch records that reside in a sequential or partitioned data set.
+  * **IEBTCRIN**: to construct records from the input data stream that have been read from the IBM 2495 Tape Cartridge Reader.
+  * **IEBUPDTE**: to incorporate changes to sequential or partitioned data sets.
+* **Independet utilities**
+  * **IBCDASDI**: to initialize a direct access volume and to assign alternate tracks.
+  * **IBCDMPRS**: to dump and restore the data contents of a direct access volume.
+  * **ICAPRTBL**: to load the forms control and Universal Character Set buffers of a 3211 after an unsuccessful attempt to IPL, with the 3211 printer assigned as the output portion of a composite console.
 
 ### Remove Session Time out
 
