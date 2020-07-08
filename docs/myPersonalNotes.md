@@ -354,7 +354,9 @@ This utilities are explained in depth in GC26-3902-1
 ### Remove Session Time out
 
 * Edit SYS1.PROCLIB(TSOLOGON)
-* Add *TIME=14440* to the line *//IKJACCNT EXEC PGM=IKJEFT01,PARM=USRLOGON,DYNAMNBR=64*
+* Add *TIME=1440* to the line *//IKJACCNT...*
+  * Before: *//IKJACCNT EXEC PGM=IKJEFT01,PARM=USRLOGON,DYNAMNBR=64*
+  * After: *//IKJACCNT EXEC PGM=IKJEFT01,PARM=USRLOGON,DYNAMNBR=64,TIME=1440*
 
 ### Enable 3270 Console
 
