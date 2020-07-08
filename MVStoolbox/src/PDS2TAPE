@@ -1,0 +1,22 @@
+//PDS2TAPE  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* *************************************************                   00000300
+//*  A PARTITIONED DATA SET IS TO BE UNLOADED TO TAPE                   00000402
+//*    1) CREATE TAPE WITH HETINIT IN HOST COMPUTER                     00000500
+//*    2) LOAD TAPE WITH DEVINIT IN HERCULES CONSOLE                    00000600
+//*    3) THEN SUBMIT THIS JCL                                          00000700
+//*    CHANGE VOL=SER=                                                  00000800
+//*           DSN=                                                      00000900
+//* *************************************************                   00001000
+//*                                                                     00001100
+//COPY   EXEC PGM=IEBCOPY,REGION=720K                                   00001200
+//SYSPRINT DD SYSOUT=*                                                  00001300
+//INPDS    DD DSN=HERC01.TOOLBOX,DISP=SHR                               00001402
+//OUTTAPE  DD UNIT=TAPE,DISP=NEW,                                       00001502
+//            DSN=HERC01.TOOLBOX,                                       00001602
+//            VOL=SER=TOOLBX,LABEL=(,SL)                                00001701
+//SYSUT3   DD UNIT=SYSDA,SPACE=(80,(60,45)),DISP=(NEW,DELETE)           00001800
+//SYSIN    DD *                                                         00001900
+  COPY INDD=INPDS,OUTDD=OUTTAPE                                         00002002
+/*                                                                      00002100
+//                                                                      00002200

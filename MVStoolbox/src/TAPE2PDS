@@ -1,0 +1,24 @@
+//TAPE2PDS  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* *************************************************                   00000300
+//*  AN UNLOADED DATA SET IS TO BE LOADED TO DISK.                      00000402
+//*    1) LOAD TAPE WITH DEVINIT IN HERCULES CONSOLE                    00000502
+//*    2) THEN SUBMIT THIS JCL                                          00000602
+//*    CHANGE VOL=SER=                                                  00000700
+//*           DSN=                                                      00000800
+//* *************************************************                   00000900
+//*                                                                     00001000
+//LOAD   EXEC PGM=IEBCOPY,REGION=720K                                   00001102
+//SYSPRINT DD SYSOUT=*                                                  00001200
+//INTAPE   DD UNIT=TAPE,DISP=OLD,                                       00001302
+//            DSN=HERC01.TOOLBOX,                                       00001402
+//            VOL=SER=TOOLBX,LABEL=(,SL)                                00001501
+//OUTPDS   DD UNIT=DISK,DISP=(NEW,CATLG,DELETE),                        00001602
+//            DSN=HERC01.TOOLBOX,                                       00001702
+//            VOL=SER=PUB001,                                           00001802
+//            SPACE=(CYL,(10,5,10))                                     00001902
+//SYSUT3   DD UNIT=SYSDA,SPACE=(80,(60,45)),DISP=(NEW,DELETE)           00002000
+//SYSIN    DD *                                                         00002100
+  COPY INDD=INTAPE,OUTDD=OUTPDS                                         00002202
+/*                                                                      00002300
+//                                                                      00002400
