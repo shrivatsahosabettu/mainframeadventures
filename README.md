@@ -22,6 +22,7 @@ More to come... *soon*
 * **SEQREAD**: Example of use of READ and DISPLAY with a Sequential file.
 * **SEQREWRT**: Example of use REWRITE to change a record on a Sequential file.
 * **SEQWRITE**: Example of use WRITE and DISP=SHR to write (overwritting) records to a Sequential file.
+* **TRANSFRM**: Example of TRANSFORM statement to alter characters.
 
 ## MVS 3.8j TOOLBOX
 

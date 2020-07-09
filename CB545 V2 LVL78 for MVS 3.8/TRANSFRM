@@ -1,0 +1,35 @@
+//TRANSFRM JOB (COBOL),                                                 00000100
+//             'TRANSFORM STATEMENT',                                   00000200
+//             CLASS=A,                                                 00000300
+//             MSGCLASS=H,                                              00000400
+//             REGION=8M,TIME=1440,                                     00000500
+//             MSGLEVEL=(1,1)                                           00000600
+//COMPCOB  EXEC COBUCG,                                                 00000700
+//         PARM.COB='FLAGW,LOAD,SUPMAP,SIZE=2048K,BUF=1024K'            00000800
+//COB.SYSPUNCH DD DUMMY                                                 00000900
+//COB.SYSIN    DD *                                                     00001000
+       IDENTIFICATION DIVISION.                                         00001100
+       PROGRAM-ID. ACCEPT01.                                            00001200
+      ******************************************************************00001300
+       ENVIRONMENT DIVISION.                                            00001400
+      ******************************************************************00001500
+       DATA DIVISION.                                                   00001600
+      ******************************************************************00001700
+       WORKING-STORAGE SECTION.                                         00001800
+           01 WS-STRING  PIC X(30).                                     00001900
+      ******************************************************************00002000
+       PROCEDURE DIVISION.                                              00002100
+      ******************************************************************00002200
+           MOVE 'THIS-IS-A-STRING' TO WS-STRING.                        00002300
+           DISPLAY 'WS-STRING: ' WS-STRING.                             00002400
+           TRANSFORM WS-STRING FROM '-' TO SPACE.                       00002500
+           DISPLAY 'WS-STRING: ' WS-STRING.                             00002600
+      *                                                                 00002700
+           MOVE 'DAVE$S MAINFRAME' TO WS-STRING.                        00002800
+           TRANSFORM WS-STRING FROM '$' TO QUOTE.                       00002900
+           DISPLAY 'WS-STRING: ' WS-STRING.                             00003000
+      **********************************                                00003100
+           STOP RUN.                                                    00003200
+/*                                                                      00003300
+//GO.SYSOUT   DD SYSOUT=*                                               00003400
+//                                                                      00003500
