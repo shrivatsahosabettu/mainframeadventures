@@ -2,27 +2,26 @@
 
 This a collection of notes I'm gathering meanwhile I learn, and I need to re-visit from time to time. Maybe it's useful to somebody else, so here it is.
 
-Table of Contents
-=================
+## Table of Contents
 
-  * [System Start (IPL)](#system-start-ipl)
-    * [Automatic IPL](#automatic-ipl)
-    * [Manual IPL](#manual-ipl)
-  * [Default Users/Passwords](#default-userspasswords)
-  * [Shutting down](#shutting-down)
-    * [Automated](#automated)
-    * [Manual](#manual)
-    * [JES2 is not going down](#jes2-is-not-going-down)
-  * [Data sets](#data-sets)
-    * [Data set Types](#data-set-types)
-    * [Data set Record Formats](#data-set-record-formats)
-  * [Tape Backups](#tape-backups)
-    * [Backup/Restore a PDS](#backuprestore-a-pds)
-      * [Backup PDS to tape](#backup-pds-to-tape)
-      * [Restore PDS from tape](#restore-pds-from-tape)
-    * [Backup/Restore an entire VOLUME](#backuprestore-an-entire-volume)
-      * [Backup VOLUME to tape](#backup-volume-to-tape)
-      * [Restore VOLUME from tape](#restore-volume-from-tape)
+* [System Start (IPL)](#system-start-ipl)
+  * [Automatic IPL](#automatic-ipl)
+  * [Manual IPL](#manual-ipl)
+* [Default Users/Passwords](#default-userspasswords)
+* [Shutting down](#shutting-down)
+  * [Automated](#automated)
+  * [Manual](#manual)
+  * [JES2 is not going down](#jes2-is-not-going-down)
+* [Data sets](#data-sets)
+  * [Data set Types](#data-set-types)
+  * [Data set Record Formats](#data-set-record-formats)
+* [Tape Backups](#tape-backups)
+  * [Backup/Restore a PDS](#backuprestore-a-pds)
+    * [Backup PDS to tape](#backup-pds-to-tape)
+    * [Restore PDS from tape](#restore-pds-from-tape)
+  * [Backup/Restore an entire VOLUME](#backuprestore-an-entire-volume)
+    * [Backup VOLUME to tape](#backup-volume-to-tape)
+    * [Restore VOLUME from tape](#restore-volume-from-tape)
 * [JCL](#jcl)
   * [The MSGLEVEL Parameter](#the-msglevel-parameter)
 * [COBOL](#cobol)
@@ -151,7 +150,9 @@ Reply with
 ### Data set Types
 
 * **Sequential (PS)**: records are data items stored consecutively. Hence, to read a record, all previous records must be read. New records are added at the end.
+  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/src/ALLOPS)
 * **Partitioned (PDS)**: Often called libraries. Consist of a directory and members. The directory holds the address of each member. Each member consist of sequentially stored records. To reuse the space left by a deleted member, the library must be compressed manually.
+  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPDS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/src/ALLOPDS)
 * **Partitioned Extended (PDSE)**: Space is reclaimed automatically when a member is deleted. Flexible size. Can be shared. Faster directory searches. Cannot no be used for PROCLIB or libraries that are part of the IPL.
 * **Virtual Storage Access Method (VSAM)**: http://www.jaymoseley.com/hercules/vs_tutor/vstutor.htm
   * **Key Sequenced Data Set (KSDS)**: each record is identified for <u>access by specifying its key value</u>. Records may be accessed sequentially, in order by key value, or directly, by supplying the key value. KSDS datasets are similar to Indexed Sequential Access Method (ISAM). Records may be added or deleted at any point.
