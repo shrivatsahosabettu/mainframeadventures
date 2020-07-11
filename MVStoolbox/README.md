@@ -1,6 +1,6 @@
 # MVS 3.8j TOOLBOX V1R2M0
 
-## Contents                                                                        
+## Contents
 
 ### Backup
 

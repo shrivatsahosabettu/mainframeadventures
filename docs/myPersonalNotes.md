@@ -150,9 +150,9 @@ Reply with
 ### Data set Types
 
 * **Sequential (PS)**: records are data items stored consecutively. Hence, to read a record, all previous records must be read. New records are added at the end.
-  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/src/ALLOPS)
+  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/ALLOPS)
 * **Partitioned (PDS)**: Often called libraries. Consist of a directory and members. The directory holds the address of each member. Each member consist of sequentially stored records. To reuse the space left by a deleted member, the library must be compressed manually.
-  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPDS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/src/ALLOPDS)
+  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPDS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/ALLOPDS)
 * **Partitioned Extended (PDSE)**: Space is reclaimed automatically when a member is deleted. Flexible size. Can be shared. Faster directory searches. Cannot no be used for PROCLIB or libraries that are part of the IPL.
 * **Virtual Storage Access Method (VSAM)**: http://www.jaymoseley.com/hercules/vs_tutor/vstutor.htm
   * **Key Sequenced Data Set (KSDS)**: each record is identified for <u>access by specifying its key value</u>. Records may be accessed sequentially, in order by key value, or directly, by supplying the key value. KSDS datasets are similar to Indexed Sequential Access Method (ISAM). Records may be added or deleted at any point.
@@ -407,7 +407,7 @@ If any gives an error *IFA006A*, need to switch (*/switch smf*), clean and switc
 
 >      attach 244 3350 dasd/hasp01.244
 
-* Initialise DASD by SUBmitting corresponding JCL (e.g. [HER01.TOOLBOX(INITDASD)](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/src/VOL2TAPE))
+* Initialise DASD by SUBmitting corresponding JCL (e.g. [HER01.TOOLBOX(INITDASD)](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/VOL2TAPE))
 * Put ONLINE the new DASD:
 
 >      /vary 244,online
