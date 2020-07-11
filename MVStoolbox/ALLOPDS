@@ -1,0 +1,27 @@
+//ALLOPDS   JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* ******************************************************************  00000301
+//*  ALLOCATE PARTITIONED DATA SET                                      00000400
+//*                                                                     00000500
+//*  THINGS TO ADAPT TO YOUR NEEDS:                                     00000600
+//*    DSN=     THE NAME OF YOUR DATA SET                               00000700
+//*    SPACE=   CYLINDERS OR TRACKS YOU WANT TO ALLOCATE                00000800
+//*             X = PRIMARY QUANTITY (HOW MANY TO ALLOCATE)             00000901
+//*             Y = SECONDARY QUANTITY (HOW MANY IF MORE SPACE NEEDED)  00001001
+//*             Z = NUMBER DIRECTORY BLOCKS. EACH CAN HAVE 6 MEMBERS.   00001101
+//*    VOL=SER= THE DASD WHERE THE DATA WILL BE ALLOCATED               00001200
+//*    LRECL=   RECORD LENGTH                                           00001300
+//*    BLKSIZE= BLOCK SIZE                                              00001400
+//* ******************************************************************  00001501
+//*                                                                     00001600
+//ALLOCATE EXEC PGM=IEFBR14                                             00001700
+//SYSPRINT   DD SYSOUT=*                                                00001800
+//SYSOUT     DD SYSOUT=*                                                00001900
+//SYSDUMP    DD SYSOUT=*                                                00002000
+//DD1        DD DSN=DATASET.NAME.HERE,                                  00002102
+//           DISP=(NEW,CATLG,DELETE),                                   00002200
+//           SPACE=(TRK,(X,Y,Z),RLSE),                                  00002301
+//           UNIT=SYSDA,                                                00002400
+//           VOL=SER=PUB001,                                            00002500
+//           DCB=(DSORG=PO,RECFM=FB,LRECL=80,BLKSIZE=800)               00002600
+//                                                                      00002700

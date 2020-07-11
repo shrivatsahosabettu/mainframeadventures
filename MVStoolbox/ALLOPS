@@ -1,0 +1,26 @@
+//ALLOPS    JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* ******************************************************************  00000304
+//*  ALLOCATE PS SEQUENTIAL FILE                                        00000401
+//*                                                                     00000501
+//*  THINGS TO ADAPT TO YOUR NEEDS:                                     00000601
+//*    DSN=     THE NAME OF YOUR DATA SET                               00000701
+//*    SPACE=   CYLINDERS OR TRACKS YOU WANT TO ALLOCATE                00000801
+//*             X = PRIMARY QUANTITY (HOW MANY TO ALLOCATE)             00000903
+//*             Y = SECONDARY QUANTITY (HOW MANY IF MORE SPACE NEEDED)  00001003
+//*    VOL=SER= THE DASD WHERE THE DATA WILL BE ALLOCATED               00001101
+//*    LRECL=   RECORD LENGTH                                           00001201
+//*    BLKSIZE= BLOCK SIZE                                              00001301
+//* ******************************************************************  00001404
+//*                                                                     00001500
+//ALLOCATE EXEC PGM=IEFBR14                                             00001600
+//SYSPRINT   DD SYSOUT=*                                                00001700
+//SYSOUT     DD SYSOUT=*                                                00001800
+//SYSDUMP    DD SYSOUT=*                                                00001900
+//DD1        DD DSN=DATASET.NAME.HERE,                                  00002003
+//           DISP=(NEW,CATLG,DELETE),                                   00002101
+//           SPACE=(CYL,(X,Y),RLSE),                                    00002203
+//           UNIT=SYSDA,                                                00002300
+//           VOL=SER=PUB001,                                            00002401
+//           DCB=(DSORG=PS,RECFM=FB,LRECL=20,BLKSIZE=200)               00002500
+//                                                                      00002600

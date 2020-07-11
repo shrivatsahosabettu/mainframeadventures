@@ -20,9 +20,3 @@
 * **INITDASD** : Initialise a DASD.
 * **PRINTSRC** : Print contents of a member. Usuful for printing source code.
 * **PRNLGREC** : Print information recorded in SYS1.LOGREC.
-
-## Installation
-
-* Load the released tape into Hercules: devinit 0480 TOOLBOX.VxRxMx.HET
-* Copy & Paste src/TAPE2PDS to your MVS, and SUBmit it.
-  * Data set HERC01.TOOLBOX will be created.
