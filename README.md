@@ -16,7 +16,7 @@ Useful (at least to me) JCLs for MVS 3.8j
 
 ## COVID-19 Report
 
-In this project I created a series of programs for Linux and MVS 3.8j TK4- to get daily COVID-19 data and generates reports.
+In this project I created a series of programs for Linux and MVS 3.8j TK4- to get daily COVID-19 data and generate reports.
 
 ---
 
