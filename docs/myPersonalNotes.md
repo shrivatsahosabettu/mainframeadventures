@@ -30,6 +30,7 @@ This a collection of notes I'm gathering meanwhile I learn, and I need to re-vis
 * [System Administration](#system-administration)
   * [OS/VS2 MVS Utilities](#osvs2-mvs-utilities)
   * [Remove Session Time out](#remove-session-time-out)
+  * [Cancel stuck session](#cancel-stuck-session)
   * [Enable 3270 Console](#enable-3270-console)
   * [IMON as Operator Console](#imon-as-operator-console)
   * [Clear log files](#clear-log-files)
@@ -359,6 +360,19 @@ This utilities are explained in depth in GC26-3902-1
   * Before: *//IKJACCNT EXEC PGM=IKJEFT01,PARM=USRLOGON,DYNAMNBR=64*
   * After: *//IKJACCNT EXEC PGM=IKJEFT01,PARM=USRLOGON,DYNAMNBR=64,TIME=1440*
 
+### Cancel stuck session
+
+If you don't log off properly, the next time you try to log in you will get an error message:
+> IKJ56425I LOGON REJECTED, USERID HERC01 IN USE
+
+To free the session, log in with another user (e.g. HERC02) and use IMON as Operator Console to enter the command:
+> /C U=HERC01
+
+you will see the message
+> IEE301I HERC01   CANCEL COMMAND ACCEPTED
+
+and log in will be available again
+
 ### Enable 3270 Console
 
 > /attach 010 3270 CONS
@@ -374,7 +388,7 @@ Not need for *hercules/unattended/set_console_mode*.
 * Go to *3 IM*
 * Go to *O - OS CONSOLE*
 * Screen goes blank.
-* Press *T*
+* Press *T* and *ENTER*.
 * Press *R* to freeze/unfreeze updates in the field *\*\<R\>*
 
 ### Clear log files
