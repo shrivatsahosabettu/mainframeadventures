@@ -53,4 +53,4 @@ Reads COVID19.DATA.TOTCNTRY and generates a report of:
 * top 10 countries ordered by number of deaths, showing total number of cases and deaths.
 * up to 5 countries (favourites), showing total number of cases and deaths.
 
-![Printout Example](https://github.com/asmCcoder/mainframeadventures/blob/master/printout.png "Printout Example")
+![Printout Example]https://github.com/asmCcoder/mainframeadventures/blob/master/covid19/printout.png "Printout Example")
