@@ -4,7 +4,21 @@ This are just some examples I'm putting together meanwhile I re-learn COBOL.
 
 I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 on OS/390 and AS/400.
 
-More to come... *soon*
+If you have any snippets you would like to share or you think my code can be improved, please fill free to create a Pull Request.
+
+---
+
+## MVS 3.8j TOOLBOX
+
+Useful (at least to me) JCLs for MVS 3.8j
+
+---
+
+## COVID-19 Report
+
+In this project I created a series of programs for Linux and MVS 3.8j TK4- to get daily COVID-19 data and generates reports.
+
+---
 
 ## OS/VS COBOL V1R2M4 (Prod# 5740-CB1) for MVS 3.8
 
@@ -24,9 +38,9 @@ More to come... *soon*
 * **SEQWRITE**: Example of use WRITE and DISP=SHR to write (overwritting) records to a Sequential file.
 * **TRANSFRM**: Example of TRANSFORM statement to alter characters.
 
-## MVS 3.8j TOOLBOX
+Many thanks to the folks at [https://groups.io/g/H390-MVS](https://groups.io/g/H390-MVS) that helped me to finish READSEQ.
 
-Useful (at least to me) JCLs for MVS 3.8j
+---
 
 ## IBM Enterprise COBOL for zOS
 
@@ -47,9 +61,3 @@ I had a brief access to an IBM Z mainframe, but now it's gone so do not expect m
 * **CALLSUB3**: Subroutine to be called (cannot be executed independently).
 * **SUBMIJCL**: Submit a JCL via Internal Reader (INTRDR).
 * **$EXECSUB**: JCL to execute SUBMIJCL.
-
----
-
-Many thanks to the folks at [https://groups.io/g/H390-MVS](https://groups.io/g/H390-MVS) that helped me to finish READSEQ for MVS 3.8
-
-If you have any snippets or you think my code can be improved, please fill free to create a Pull Request.
