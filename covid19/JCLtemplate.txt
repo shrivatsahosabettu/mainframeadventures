@@ -1,0 +1,36 @@
+//CV19DATA  JOB ,'COVID19',CLASS=A,MSGCLASS=A,COND=(0,NE),
+//           USER=HERC01,PASSWORD=CUL8TR
+/*JOBPARM ROOM=CV19
+//************************************************
+//* CHECK IF SEQUENTIAL FILE ALREADY EXISTS
+//************************************************
+//CHECKIS  EXEC PGM=IDCAMS           
+//SYSPRINT   DD SYSOUT=*             
+//SYSOUT     DD SYSOUT=*             
+//SYSDUMP    DD SYSOUT=*             
+//SYSIN      DD *                    
+  LISTCAT ENTRIES('COVID19.DATA.DAILY')
+/*                                   
+//************************************************
+//* DELETE SEQUENTIAL FILE ONLY (COND=(4,EQ)) 
+//* IF IT ALREADY EXISTS
+//************************************************
+//DELETE   EXEC PGM=IEFBR14,COND=(4,EQ)
+//SYSPRINT   DD SYSOUT=*
+//SYSOUT     DD SYSOUT=*
+//SYSDUMP    DD SYSOUT=*
+//DD1        DD DSN=COVID19.DATA.DAILY,
+//           DISP=(OLD,DELETE)
+//************************************************
+//* POPULATE DATA INTO SEQUENTIAL FILE
+//************************************************
+//COPYDATA EXEC PGM=IEBGENER
+//SYSPRINT   DD SYSOUT=*
+//SYSIN      DD DUMMY
+//SYSUT2     DD DSN=COVID19.DATA.DAILY,
+//           DISP=(NEW,CATLG,DELETE),
+//           SPACE=(CYL,(1,2),RLSE),
+//           UNIT=SYSDA,
+//           VOL=SER=DASTA1,
+//           DCB=(DSORG=PS,RECFM=FB,LRECL=80,BLKSIZE=8000)
+//SYSUT1     DD *
