@@ -1,10 +1,11 @@
 # Mainframe Adventures
 
-This are just some examples I'm putting together meanwhile I re-learn COBOL.
+Since I discovered [MVS 3.8j Tur(n)key 4-](http://wotho.ethz.ch/tk4-/), I've been dedicating insanely amount of hours on it. And here I'm sharing my adventures.
 
-I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 on OS/390 and AS/400.
 
-If you have any snippets you would like to share or you think my code can be improved, please fill free to create a Pull Request.
+## Poor Man's MVS Scheduler (PMMSSCHD)
+
+A scheduler for [MVS 3.8j Tur(n)key 4-](http://wotho.ethz.ch/tk4-/).
 
 ---
 
@@ -22,6 +23,14 @@ In this project I created a series of programs for Linux and MVS 3.8j TK4- to ge
 
 ## OS/VS COBOL V1R2M4 (Prod# 5740-CB1) for MVS 3.8
 
+This are just some examples I'm putting together meanwhile I re-learn COBOL.
+
+I'm by no means an expert on COBOL or mainframes, so use it with caution. My experience with COBOL was circa 1997-2006 on OS/390 and AS/400.
+
+If you have any snippets you would like to share or you think my code can be improved, please fill free to create a Pull Request.
+
+Many thanks to the folks at [https://groups.io/g/H390-MVS](https://groups.io/g/H390-MVS) that helped me to finish READSEQ.
+
 * **TEMPLATE**: Template with (almost) all DIVISION and SECTION.
 * **CONDITIO**: Example of use of conditional statements (IF/ELSE, IF NOT, SIGN, CLASS, CONDITION-NAME, AND).
 * **ARITHMET**: Example of arithmetic operations (ADD, SUBTRACT, MULTIPLY, DIVIDE, COMPUTE).
@@ -37,8 +46,6 @@ In this project I created a series of programs for Linux and MVS 3.8j TK4- to ge
 * **SEQREWRT**: Example of use REWRITE to change a record on a Sequential file.
 * **SEQWRITE**: Example of use WRITE and DISP=SHR to write (overwritting) records to a Sequential file.
 * **TRANSFRM**: Example of TRANSFORM statement to alter characters.
-
-Many thanks to the folks at [https://groups.io/g/H390-MVS](https://groups.io/g/H390-MVS) that helped me to finish READSEQ.
 
 ---
 

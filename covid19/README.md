@@ -29,7 +29,7 @@ This script, has several steps:
 
 ## On MVS 3.8j TK4-
 
-Using my *Poor Man's MVS Scheduler (PMMS)* (soon to be published here), I scheduled a JCL (*$EXECTOT*) that runs every day at 7am (just before I start my working day) and generates a report with the latest data received.
+Using my [Poor Man's MVS Scheduler (PMMSSCHD)](https://github.com/asmCcoder/mainframeadventures/tree/master/pmmsschd), I scheduled a JCL (*$EXECTOT*) that runs every day at 7am (just before I start my working day) and generates a report with the latest data received.
 
 ### COVID19.SRC.JCL($EXECTOT)
 
@@ -49,6 +49,7 @@ Reads COVID19.DATA.DAILY and for each country, aggregates the total number of ca
 ### COVID19.SRC.COBOL(REPCNTRY)
 
 Reads COVID19.DATA.TOTCNTRY and generates a report of:
+
 * top 10 countries ordered by number of cases, showing total number of cases and deaths.
 * top 10 countries ordered by number of deaths, showing total number of cases and deaths.
 * up to 5 countries (favourites), showing total number of cases and deaths.
