@@ -12,9 +12,6 @@ This a collection of notes I'm gathering meanwhile I learn, and I need to re-vis
   * [Automated](#automated)
   * [Manual](#manual)
   * [JES2 is not going down](#jes2-is-not-going-down)
-* [Data sets](#data-sets)
-  * [Data set Types](#data-set-types)
-  * [Data set Record Formats](#data-set-record-formats)
 * [Tape Backups](#tape-backups)
   * [Backup/Restore a PDS](#backuprestore-a-pds)
     * [Backup PDS to tape](#backup-pds-to-tape)
@@ -44,6 +41,7 @@ This a collection of notes I'm gathering meanwhile I learn, and I need to re-vis
     * [FTP Server](#ftp-server)
     * [HTTP Server](#http-server)
 * [Technical](#technical)
+  * [Data sets](#data-sets)
   * [DASD architecture](#dasd-architecture)
   * [Printers](#printers)
 
@@ -143,36 +141,6 @@ If this fails:
 Reply with
 
 > /R 01,PURGE
-
----
-
-## Data sets
-
-### Data set Types
-
-* **Sequential (PS)**: records are data items stored consecutively. Hence, to read a record, all previous records must be read. New records are added at the end.
-  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/ALLOPS)
-* **Partitioned (PDS)**: Often called libraries. Consist of a directory and members. The directory holds the address of each member. Each member consist of sequentially stored records. To reuse the space left by a deleted member, the library must be compressed manually.
-  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPDS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/ALLOPDS)
-* **Partitioned Extended (PDSE)**: Space is reclaimed automatically when a member is deleted. Flexible size. Can be shared. Faster directory searches. Cannot no be used for PROCLIB or libraries that are part of the IPL.
-* **Virtual Storage Access Method (VSAM)**: http://www.jaymoseley.com/hercules/vs_tutor/vstutor.htm
-  * **Key Sequenced Data Set (KSDS)**: each record is identified for <u>access by specifying its key value</u>. Records may be accessed sequentially, in order by key value, or directly, by supplying the key value. KSDS datasets are similar to Indexed Sequential Access Method (ISAM). Records may be added or deleted at any point.
-  * **Entry Sequence Data Set (ESDS)**: each record is identified for <u>access by specifying its physical location (Relative Byte Address [RBA])</u>.  Records may be accessed sequentially, in order by RBA value, or directly, by supplying the RBA of the desired record. ESDS datasets are similar to Basic Sequential Access Method (BSAM) or Queued Sequential Access Method (QSAM) datasets. Records cannot be deleted, and they can only be appended (added to the end of the dataset).
-  * **Relative Record Data Set (RRDS)**: each record is identified for <u>access by specifying its record number</u>. Records may be accessed sequentially, in relative record number order, or directly, by supplying the relative record number of the desired record. RRDS datasets are similar to Basic Direct Access Method (BDAM) datasets. Records may be added into an empty record or deleted, leaving an empty record.
-  * **Linear Data Set (LDS)**
-* **Generation Data Group (GDG)**: catalogues successive updates of related data. Allows to keep the historical data of n updates.
-
-**Permanent**: exists before a job starts and persist after job completes.
-
-**Temporary**: Used to pass data from one job step to another. Exist only during the life cycle of the job.
-
-### Data set Record Formats
-
-* **Fixed records (F)**: all records have the same length. One record is send for each I/O operation. Not really used.
-* **Fixed Blocked records (FB)**:  all records have the same length. Several records are send for each I/O operation.
-* **Variable records (V)**: each record can have a different length. Several records are send for each I/O operation.
-* **Variable Blocked records (VB)**: each record can have a different length. Several records are send for each I/O operation.
-* **Undefined records (U)**: undefined structure. Used for libraries that contain compiled modules (programs).
 
 ---
 
@@ -540,6 +508,32 @@ Must have in conf/tk4-.conf:
 ---
 
 ## Technical
+
+### Data sets
+
+* **Sequential (PS)**: records are data items stored consecutively. Hence, to read a record, all previous records must be read. New records are added at the end.
+  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/ALLOPS)
+* **Partitioned (PDS)**: Often called libraries. Consist of a directory and members. The directory holds the address of each member. Each member consist of sequentially stored records. To reuse the space left by a deleted member, the library must be compressed manually.
+  * To allocate: use RFE option 3.2 or [MVStoolbox's ALLOPDS JCL](https://github.com/asmCcoder/mainframeadventures/blob/master/MVStoolbox/ALLOPDS)
+* **Partitioned Extended (PDSE)**: Space is reclaimed automatically when a member is deleted. Flexible size. Can be shared. Faster directory searches. Cannot no be used for PROCLIB or libraries that are part of the IPL.
+* **Virtual Storage Access Method (VSAM)**: http://www.jaymoseley.com/hercules/vs_tutor/vstutor.htm
+  * **Key Sequenced Data Set (KSDS)**: each record is identified for <u>access by specifying its key value</u>. Records may be accessed sequentially, in order by key value, or directly, by supplying the key value. KSDS datasets are similar to Indexed Sequential Access Method (ISAM). Records may be added or deleted at any point.
+  * **Entry Sequence Data Set (ESDS)**: each record is identified for <u>access by specifying its physical location (Relative Byte Address [RBA])</u>.  Records may be accessed sequentially, in order by RBA value, or directly, by supplying the RBA of the desired record. ESDS datasets are similar to Basic Sequential Access Method (BSAM) or Queued Sequential Access Method (QSAM) datasets. Records cannot be deleted, and they can only be appended (added to the end of the dataset).
+  * **Relative Record Data Set (RRDS)**: each record is identified for <u>access by specifying its record number</u>. Records may be accessed sequentially, in relative record number order, or directly, by supplying the relative record number of the desired record. RRDS datasets are similar to Basic Direct Access Method (BDAM) datasets. Records may be added into an empty record or deleted, leaving an empty record.
+  * **Linear Data Set (LDS)**
+* **Generation Data Group (GDG)**: catalogues successive updates of related data. Allows to keep the historical data of n updates.
+
+**Permanent**: exists before a job starts and persist after job completes.
+
+**Temporary**: Used to pass data from one job step to another. Exist only during the life cycle of the job.
+
+#### Data set Record Formats
+
+* **Fixed records (F)**: all records have the same length. One record is send for each I/O operation. Not really used.
+* **Fixed Blocked records (FB)**:  all records have the same length. Several records are send for each I/O operation.
+* **Variable records (V)**: each record can have a different length. Several records are send for each I/O operation.
+* **Variable Blocked records (VB)**: each record can have a different length. Several records are send for each I/O operation.
+* **Undefined records (U)**: undefined structure. Used for libraries that contain compiled modules (programs).
 
 ### DASD architecture
 
