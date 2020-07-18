@@ -8,7 +8,8 @@ echo '/*' >> uploadToMVS.JCL
 echo '//' >> uploadToMVS.JCL
 
 # SUBmit JCL to MVS
-./hercsub.pl localhost:3505 uploadToMVS.JCL
+#./hercsub.pl localhost:3505 uploadToMVS.JCL
+netcat -w 10 localhost 3505 < uploadToMVS.JCL
 
 # Remove big files
 rm -f uploadToMVS.JCL

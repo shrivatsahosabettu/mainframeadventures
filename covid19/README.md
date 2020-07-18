@@ -6,10 +6,8 @@ In this project I created a series of programs for Linux and MVS 3.8j TK4- to ge
 
 * A Linux machine with
   * Python 3.x
-  * Perl
   * crontab
   * Internet conection
-  * hercsub.pl Perl script to submit jobs to MVS Internal Card Reader
 * MVS 3.8j TK4- with
   * Internal Card Reader socket configured (*000C 3505 localhost:3505 sockdev autopad trunc ascii eof*)
   * COBOL compiler
@@ -25,7 +23,7 @@ This script, has several steps:
 * Builds a JCL file that:
   * checks if the data set COVID19.DATA.DAILY exists (using *IDCAMS*) and if it does, deletes it (using *IEFBR14*).
   * allocates data set again and adds all the covid-19 formatted data (using *IEBGENER*).
-* Submits the JCL to the MVS Internal Reader, using a Perl script (*hercsub.pl*) I found on Internet. The Perl script is mentioned in [Jay Moseley's website](http://www.jaymoseley.com/hercules/faq/mvsfaq04.htm#USER001), but I don't remember where I got it from.
+* Submits the JCL to the MVS Internal Reader, using [netcat](https://linux.die.net/man/1/nc).
 
 ## On MVS 3.8j TK4-
 
