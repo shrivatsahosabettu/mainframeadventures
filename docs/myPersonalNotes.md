@@ -483,6 +483,93 @@ Edit SYS1.CMDPROC(USRLOGON) and leave it like this:
 000033 EXIT
 ```
 
+### Add a new Direct-Access Storage Device (DASD)
+
+Create DASD with Hercules tool:
+> dasdinit -a filename devtype volser
+>
+> (e.g. dasdinit -a vsam01.246 3350 VSAM01)
+
+where:
+
+* -a: build DASD image file that includes alternate cylinders.
+* filename: any name and any extension, but typically filename is the same as the *volser* and extension is the same as the *devnum* or *devtype*. (e.g. VSAM01.246 or VSAM01.3350).
+* devtype: is one of the [IBM magnetic disk drives](https://en.wikipedia.org/wiki/History_of_IBM_magnetic_disk_drives). Typically 3350, 3380 or 3390.
+* volser: is the Volume Serial that will be used by MVS. Maximum 6 characters.
+
+Attach DASD to Hercules, by typing at Hercules console:
+> attach devnum devtype filename
+>
+>(e.g. attach 0246 3350 VSAM01.246)
+
+Put the DASD offline, from the Hercules console
+> /v devnum,offline
+>
+>(e.g. /v 246,offline)
+
+Dealloacate it
+>/s dealloc
+
+Format DASD, by SUBmitting JCL below.
+
+Changing values for volnum, volser and VTOC_tracks
+
+```text
+//INITDASD JOB (1),ICKDSF,CLASS=A,MSGCLASS=H
+//ICKDSF  EXEC PGM=ICKDSF,REGION=4096K
+//SYSPRINT  DD SYSOUT=*
+//SYSIN     DD *
+  INIT UNITADDRESS(volnum) NOVERIFY VOLID(volser) OWNER(HERCULES) - 
+       VTOC(0,1,VTOC_tracks)
+/*
+//
+```
+
+In the console will appear the message
+> *00 ICK003D REPLY U TO ALTER VOLUME 246 CONTENTS, ELSE T
+
+Reply with
+>/R 00,U
+
+Check printout (RFE option 3.8) for INITDASD. It should have RC=0000
+
+Put the DASD online, from the Hercules console
+> /v devnum,online
+>
+>(e.g. /v 246,online)
+
+Mount the DASD
+> /m volnum,vol=(sl,volser),use=usetype
+
+where usetype:
+
+* STORAGE: MVS can use the disc to create temporary and permanent libraries.
+* PUBLIC: MVS can use the disc to create temporary libraries.
+* PRIVATE: MVS will not use this disc unless user specifies manually this disk.
+
+At this point, if you try to access the volume (RFE option 3.4), you will get error *No data sets found*. But this is good. The DASD has been formatted and mounted correctly, and it's ready to be used.
+
+Make volume mounted at each IPL:
+
+* Add at the end of SYS1.PARMLIB(VATLST00) in the format as follows:
+  * Columns 1-6: volser
+  * Column 8: 0=resident, 1=reserved
+  * Columns 10: 0=storage, 1=public, 2=private
+  * Columns 12-19: devtype
+  * Column 21: Y=mandatory that DASD is present to start MVS, N=optional
+  * Columns 23-71: comments
+
+Example:
+
+```text
+----+----1----+----2----+----3----+----4----+----5----+----6----+----7-
+VSAM01,0,2,3350    ,N VSAM Volume 1
+```
+
+Add DASD to Hercules’ configuration
+> volser devtype filename
+> (e.g. 0246 3350 VSAM01.246)
+
 ### Services
 
 #### MF/1
