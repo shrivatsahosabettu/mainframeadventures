@@ -1,0 +1,26 @@
+//DEFUCVS   JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* ******************************************************************  00000300
+//*  DEFINE USER CATALOG FOR VSAM DATA SETS                             00000400
+//*                                                                     00000500
+//*  THINGS TO ADAPT TO YOUR NEEDS:                                     00000600
+//*    TLBOX1=    CHANGE FOR THE VOL=SER OF YOUR DASD                   00000700
+//*    UCTLBOX1=  CHANGE FOR THE NAME YOU WISH FOR YOUR USER CATALOG    00000800
+//* ******************************************************************  00000900
+//*                                                                     00001000
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K                                 00001100
+//SYSPRINT DD  SYSOUT=A                                                 00001200
+//TLBOX1   DD  UNIT=3350,VOL=SER=TLBOX1,DISP=OLD                        00001300
+//SYSIN    DD  *                                                        00001400
+  DEFINE USERCATALOG (                                      -           00001500
+               NAME (UCTLBOX1)                              -           00001600
+               VOLUME (TLBOX1)                              -           00001700
+               TRACKS (13259 0)                             -           00001800
+               FOR (9999) )                                 -           00001900
+         DATA (TRACKS (15 5) )                              -           00002000
+         INDEX (TRACKS (15) )                                           00002100
+                                                                        00002200
+  IF LASTCC = 0 THEN                                        -           00002300
+        LISTCAT ALL CATALOG(UCTLBOX1)                                   00002400
+/*                                                                      00002500
+//                                                                      00002600

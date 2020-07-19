@@ -1,0 +1,21 @@
+//DEFALIAS  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* ******************************************************************  00000300
+//*  DEFINE ALIAS FOR CATALOGING HLQ                                    00000400
+//*                                                                     00000500
+//*  THINGS TO ADAPT TO YOUR NEEDS:                                     00000600
+//*    TLBOX1=    CHANGE FOR THE VOL=SER OF YOUR DASD                   00000700
+//*    UCTLBOX1=  CHANGE FOR THE NAME YOU WISH FOR YOUR USER CATALOG    00000800
+//* ******************************************************************  00000900
+//*                                                                     00001000
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K                                 00001100
+//SYSPRINT DD  SYSOUT=A                                                 00001200
+//SYSIN    DD  *                                                        00001300
+  DEFINE ALIAS (NAME(TLBOX1)                                -           00001400
+                RELATE(UCTLBOX1) )                                      00001500
+                                                                        00001600
+  IF MAXCC = 0 THEN DO                                      -           00001700
+        LISTCAT ALIAS                                       -           00001800
+     END                                                                00001900
+/*                                                                      00002000
+//                                                                      00002100

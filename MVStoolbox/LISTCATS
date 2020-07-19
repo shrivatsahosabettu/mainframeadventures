@@ -1,0 +1,17 @@
+//LISTCATS  JOB ,'MVS TOOLBOX',CLASS=A,MSGCLASS=H                       00000100
+//*                                                                     00000200
+//* ******************************************************************  00000300
+//*  LIST MASTER AND USER CATALOGS                                      00000400
+//*                                                                     00000500
+//*  THINGS TO ADAPT TO YOUR NEEDS:                                     00000600
+//*    UCTLBOX1=  CHANGE FOR THE NAME YOU WISH FOR YOUR USER CATALOG    00000700
+//* ******************************************************************  00000800
+//*                                                                     00000900
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K                                 00001000
+//SYSPRINT DD  SYSOUT=A                                                 00001100
+//SYSIN    DD  *                                                        00001200
+  LISTCAT ALIAS NAME                                                    00001300
+  LISTCAT ALL CAT(UCTLBOX1)                                             00001400
+  LISTCAT NONVSAM ALL CAT(UCTLBOX1)                                     00001500
+/*                                                                      00001600
+//                                                                      00001700
