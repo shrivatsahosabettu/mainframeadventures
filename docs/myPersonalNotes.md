@@ -25,6 +25,7 @@ This a collection of notes I'm gathering meanwhile I learn, and I need to re-vis
   * [Level Number](#level-number)
 * [KICKS](#kicks)
 * [System Administration](#system-administration)
+  * [Operator Console Commands](#operator-console-commands)
   * [OS/VS2 MVS Utilities](#osvs2-mvs-utilities)
   * [Remove Session Time out](#remove-session-time-out)
   * [Cancel stuck session](#cancel-stuck-session)
@@ -36,6 +37,9 @@ This a collection of notes I'm gathering meanwhile I learn, and I need to re-vis
   * [Increase JES2 spool space](#increase-jes2-spool-space)
   * [Repair JES2 after $HASP050 JES RESOURCE SHORTAGE](#repair-jes2-after-hasp050-jes-resource-shortage)
   * [Remove BSPFCOOK (The Fortune Cookie Program)](#remove-bspfcook-the-fortune-cookie-program)
+  * [Add a new Direct-Access Storage Device (DASD)](#add-a-new-direct-access-storage-device-(DASD))
+    * [Create a User Catalog](#create-a-user-catalog)
+    * [Create ALIAS for data sets](#create-alias-for-data-sets)
   * [Services](#services)
     * [MF/1](#mf1)
     * [FTP Server](#ftp-server)
@@ -156,7 +160,7 @@ Create tape in Linux:
 
 SUBmit:
 
-```jcl
+```JCL
 //TAPETO JOB (01),'COPY TO TAPE',CLASS=A,MSGCLASS=H
 //COPY   EXEC PGM=IEBCOPY,REGION=720K
 //SYSPRINT DD SYSOUT=*
@@ -181,7 +185,7 @@ Create destination PDS in MVS at 3.2 with same configuration as original
 
 SUBmit:
 
-```jcl
+```JCL
 //TAPEFROM JOB (01),'RESTORE FROM TAPE',CLASS=A,MSGCLASS=H
 //COPY    EXEC PGM=IEBCOPY,REGION=720K
 //SYSPRINT  DD SYSOUT=*
@@ -217,7 +221,7 @@ Load tape in Hercules console
 
 SUBmit:
 
-```jcl
+```JCL
 //VOL2TAPE JOB CLASS=A,MSGLEVEL=(1,1),MSGCLASS=A
 //IEHDASDR EXEC PGM=IEHDASDR,REGION=4096K
 //SYSPRINT DD  SYSOUT=A
@@ -238,7 +242,7 @@ Load tape in Hercules console:
 
 SUBmit:
 
-```jcl
+```JCL
 //TAPE2VOL JOB CLASS=A,MSGLEVEL=(1,1),MSGCLASS=A
 //IEHDASDR EXEC PGM=IEHDASDR,REGION=4096K
 //SYSPRINT DD  SYSOUT=A
@@ -299,6 +303,27 @@ At READY prompt:
 ---
 
 ## System Administration
+
+### Operator Console Commands
+
+This commands can also be executed from Hercules' console  by prefixing them with /
+
+|Command|Description|
+|:------|:----------|
+|D A,L|Show all active jobs and users|
+|D R,L|Display unanswered WTOR|
+|D U,DASD,ONLINE|Display all online DASD volumes|
+|D U,TAPE|Display status of all tapes|
+|D U,,,devnum,n|Display status of device, starting from devnum to devnum+n|
+|D TS,L|Display all TSO active users|
+|D DUMP|Display status of dump datasets|
+|D J|Display number of active jobs and initiators|
+|D T|Display date and time|
+|K E,1|Erase top line (permanent messages) of console display area|
+|K E,D|Erase bottom of console display area|
+|SE ‘message’|Send a message to all TSO users|
+|SE ‘message’ USER=xxxx|Send a message to TSO user xxxx|
+|M volnum,VOL=(SL,volser),USE=usetype|Mount command|
 
 ### OS/VS2 MVS Utilities
 
@@ -406,7 +431,7 @@ If any gives an error *IFA006A*, need to switch (*/switch smf*), clean and switc
 
 * Allocate dataset, by SUBmitting:
 
-```jcl
+```JCL
 //ALLOCDS   JOB ,'ALLOCATE DATASET',CLASS=A,MSGCLASS=H
 //STEP1   EXEC PGM=IEFBR14
 //HASP01    DD DISP=(NEW,KEEP),
@@ -510,11 +535,9 @@ Put the DASD offline, from the Hercules console
 Dealloacate it
 >/s dealloc
 
-Format DASD, by SUBmitting JCL below.
+Format DASD, by SUBmitting JCL below after changing values for *volnum*, *volser* and *VTOC_tracks*:
 
-Changing values for volnum, volser and VTOC_tracks
-
-```text
+```JCL
 //INITDASD JOB (1),ICKDSF,CLASS=A,MSGCLASS=H
 //ICKDSF  EXEC PGM=ICKDSF,REGION=4096K
 //SYSPRINT  DD SYSOUT=*
@@ -547,9 +570,142 @@ where usetype:
 * PUBLIC: MVS can use the disc to create temporary libraries.
 * PRIVATE: MVS will not use this disc unless user specifies manually this disk.
 
-At this point, if you try to access the volume (RFE option 3.4), you will get error *No data sets found*. But this is good. The DASD has been formatted and mounted correctly, and it's ready to be used.
+At this point, if you try to access the volume (RFE option 3.4), you will get error *No data sets found*. But this is good. This means, the DASD has been formatted and mounted correctly, and it's ready to be used. For example to add dataset or create a User Catalog.
 
-Make volume mounted at each IPL:
+#### Create a User Catalog
+
+**NOTE**: I find VSAM and Catalogs a bit complicated subject, therefore I won't trust too much what I say here. Better look at [Jay Moseley's VSAM Tutorial](http://www.jaymoseley.com/hercules/vs_tutor/vstutor.htm) or read *DFSMS/MVS Version 1 Release 2 Access Method Services for VSAM (SC26-4905-01)*.
+
+It's a recomended practice to have ONLY system data sets in the Master Catalog (SYS1.VMASTCAT), and create User Catalogs for all other data sets. In other words; never user Master Catalog for your new data sets. This way the Master Catalog will only contain the TK4- data sets.
+
+Therefore, when adding a new DASD like we just did, create a User Catalog for it. This requires a bit of planning ahead: Is the DASD going to contain VSAM or non-VSAM data sets? (I heard is better to have a dedicated DASD for VSAM only) Do we allocate space for VSAM now or we will do it as we need it?
+
+For a VSAM only DASD (e.g. VOL=SER= with *DASTA1*) we SUBmit:
+
+```JCL
+//DEFUCAT1 JOB 'DEFINE USER CAT',CLASS=A,MSGLEVEL=(1,1),MSGCLASS=H
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K
+//SYSPRINT DD  SYSOUT=A
+//DASTA1   DD  UNIT=3350,VOL=SER=DASTA1,DISP=OLD
+//SYSIN    DD  *
+  DEFINE USERCATALOG (                                      -
+               NAME (UCDASTA1)                              -
+               VOLUME (DASTA1)                              -
+               TRACKS (13259 0)                             -
+               FOR (9999) )                                 -
+         DATA (TRACKS (15 5) )                              -
+         INDEX (TRACKS (15) )
+
+  IF LASTCC = 0 THEN                                        -
+        LISTCAT ALL CATALOG(UCDASTA1)
+/*
+//
+```
+
+For a non-VSAM only DASD (e.g. VOL=SER= with *DASTA2*) we SUBmit:
+
+```JCL
+//DEFUCAT1 JOB 'DEFINE USER CAT',CLASS=A,MSGLEVEL=(1,1),MSGCLASS=H
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K
+//SYSPRINT DD  SYSOUT=A
+//DASTA2   DD  UNIT=3350,VOL=SER=DASTA,DISP=OLD
+//SYSIN    DD  *
+  DEFINE USERCATALOG (                                      -
+               NAME (UCDASTA2)                              -
+               VOLUME (DASTA2)                              -
+               TRACKS (15)                                  -
+               FOR (9999) )                                 -
+
+  IF LASTCC = 0 THEN                                        -
+        LISTCAT ALL CATALOG(UCDASTA2)
+/*
+//
+```
+
+If now we access the volume (RFE option 3.4), we will see a data set like *Z9999994.VSAMDSPC.TD83D7D1.T43508F0*.
+
+#### Create ALIAS for data sets
+
+```JCL
+//DEFALIAS JOB 'DEFINE ALIAS',CLASS=A,MSGLEVEL=(1,1),MSGCLASS=H
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K
+//SYSPRINT DD  SYSOUT=A
+//SYSIN    DD  *
+  DEFINE ALIAS (NAME(DASTA1)                                -
+                RELATE(UCDASTA1) )
+
+  DEFINE ALIAS (NAME(DASTA2)                                -
+                RELATE(UCDASTA2) )
+
+  IF MAXCC = 0 THEN DO                                      -
+        LISTCAT ALIAS                                       -
+     END
+/*
+//
+```
+
+If now we list the alias in the Master Catalog:
+
+```JCL
+//LISTCAT  JOB 'LIST ALIAS',CLASS=A,MSGLEVEL=(1,1),MSGCLASS=H
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K
+//SYSPRINT DD  SYSOUT=A
+//SYSIN    DD  *
+  LISTCAT ALIAS NAME
+  LISTCAT ALL CATALOG(UCDASTA1)
+  LISTCAT ALL CATALOG(UCDASTA2)
+/*
+//
+```
+
+we should see 2 entries for the alias of our 2 DASD:
+
+```text
+                             LISTING FROM CATALOG -- SYS1.VMASTCAT
+ALIAS --------- DASTA1
+ALIAS --------- DASTA2
+```
+
+If now we allocate a data set (RFE option 3.2) with HLQ DASTA2, it will be cataloged in the UCDASTA2 User Catalog instead of the Master Catalog, as we wanted.
+
+For example, we allocate a data set called *DASTA2.TEST.SEQ*.
+
+Then we SUBmit:
+
+```JCL
+//LISTCAT  JOB 'LIST CATALOGS',CLASS=A,MSGLEVEL=(1,1),MSGCLASS=H
+//IDCAMS   EXEC PGM=IDCAMS,REGION=4096K
+//SYSPRINT DD  SYSOUT=A
+//SYSIN    DD  *
+  LISTCAT ALIAS NAME
+  LISTCAT ALL CATALOG(UCDASTA1)
+  LISTCAT ALL CATALOG(UCDASTA2)
+  LISTCAT NONVSAM ALL CAT(UCDASTA2)
+/*
+//
+```
+
+and in the printout we will see:
+
+```text
+  LISTCAT NONVSAM ALL CAT(UCDASTA2)
+IDCAMS  SYSTEM SERVICES                                           TIME: 10:35:18
+                             LISTING FROM CATALOG -- UCDASTA2
+NONVSAM ------- DASTA2.TEST.SEQ
+     HISTORY
+       OWNER-IDENT-------(NULL)     CREATION----------20.201
+       RELEASE----------------2     EXPIRATION--------00.000
+     VOLUMES
+       VOLSER------------DASTA2     DEVTYPE------X'3050200B'     FSEQN----------
+     ASSOCIATIONS--------(NULL)
+```
+
+**IMPORTANT**:
+
+* Before allocating any data sets with a new HLQ (i.e. an HLQ for which we don't have an ALIAS), we SHOULD create the alias for the HLQ that we want to create, to avoid it will be cataloged in th Master Catalog.
+* When allocating data sets, we still need to specify the VOLUME if we want the data set to be allocated in our new DASD. Defining an ALIAS only affects cataloging, not where the data set will physically be allocated.
+
+#### Make volume mounted at each IPL
 
 * Add at the end of SYS1.PARMLIB(VATLST00) in the format as follows:
   * Columns 1-6: volser
