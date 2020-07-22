@@ -25,7 +25,7 @@
 //TOTPRV    DD DISP=SHR,DSN=COVID19.DATA.TOTCPREV                       00002505
 //* UP TO 5 COUNTRY CODES CAN BE SPECIFIED AS FAVOURITE COUNTRIES       00002602
 //SYSIN     DD *                                                        00002701
-DEUESPBGRCANSWE                                                         00002802
+DEUESPGBRCANSWE                                                         00002810
 /*                                                                      00002901
 //************************************************                      00003009
 //* COPY TOTCNTRY TO TOTCPREV,                                          00003109
